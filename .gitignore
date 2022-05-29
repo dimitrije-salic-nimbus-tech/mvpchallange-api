@@ -1,0 +1,17 @@
+# IDE
+.idea
+.vscode
+
+# NodeJS
+node_modules/
+
+# Tests
+coverage/
+
+# Env file
+.env.dev
+.env.test
+.env.prod
+
+# Docker
+.docker/volumes/

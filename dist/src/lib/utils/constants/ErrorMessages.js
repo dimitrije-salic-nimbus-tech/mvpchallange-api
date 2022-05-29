@@ -1,0 +1,13 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.NOT_ENOUGH_PRODUCT_AMOUNT = exports.NOT_ENOUGH_DEPOSIT = exports.INCORRECT_PRICE = exports.RESOURCE_NOT_FOUND = exports.PRODUCT_ALREADY_EXISTS = exports.USER_ALREADY_EXISTS = exports.INTERNAL_SERVER_ERROR = exports.NOT_FOUND = exports.BAD_REQUEST = exports.UNKNOWN_ERROR = void 0;
+exports.UNKNOWN_ERROR = 'The application has encountered an unknown error';
+exports.BAD_REQUEST = 'BAD_REQUEST';
+exports.NOT_FOUND = 'NOT_FOUND';
+exports.INTERNAL_SERVER_ERROR = 'INTERNAL_SERVER_ERROR';
+exports.USER_ALREADY_EXISTS = 'User with the same username already exists';
+exports.PRODUCT_ALREADY_EXISTS = 'Product with the same name already exists';
+exports.RESOURCE_NOT_FOUND = "Resource is not found";
+exports.INCORRECT_PRICE = 'Incorrect price value';
+exports.NOT_ENOUGH_DEPOSIT = 'Not enough deposit';
+exports.NOT_ENOUGH_PRODUCT_AMOUNT = 'Not enough product amount';
