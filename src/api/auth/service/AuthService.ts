@@ -4,7 +4,7 @@ import { LoginResponse } from '../dto/response';
 
 interface IAuthService {
   getCognitoUrl: () => LoginResponse;
-  cognitoRedirect: (request: any) => string;
+  cognitoRedirect: () => string;
 }
 
 const getCognitoUrl = (): LoginResponse => ({
@@ -15,9 +15,7 @@ const getCognitoUrl = (): LoginResponse => ({
   ),
 });
 
-const cognitoRedirect = (request: any): string => {
-  console.log(123, request); // TODO: extract token and store in redis, create cognito middleware
-
+const cognitoRedirect = (): string => {
   return 'success';
 };
 

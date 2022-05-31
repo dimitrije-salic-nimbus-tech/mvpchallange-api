@@ -5,6 +5,6 @@ const router = Router();
 
 router.get('', (req: Request, res: Response) => res.send(authService.getCognitoUrl()));
 
-router.get('/redirect-uri', (req: Request, res: Response) => res.send(authService.cognitoRedirect(req)));
+router.get('/redirect-uri', (req: Request, res: Response) => res.send(authService.cognitoRedirect()));
 
 export default router;
