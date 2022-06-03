@@ -1,6 +1,6 @@
 import { Joi, Segments } from 'celebrate';
 
-import { RoleEnum } from '../../../../lib/enums';
+import { RoleEnum } from '../../../../lib/shared/enums';
 import { VALID_COINS } from '../../../../lib/utils/validation';
 
 const createUserSchema = {

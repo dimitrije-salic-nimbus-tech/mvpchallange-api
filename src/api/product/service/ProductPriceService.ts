@@ -1,7 +1,7 @@
 import { getProductPriceRepository } from '../../../lib/repositories';
 import { ProductEntity } from '../../../lib/entities/ProductEntity';
 import { ProductPriceResponse } from '../dto/response';
-import { PageableItems, PageableRequest } from '../../../lib/dto/pagination';
+import { PageableItems, PageableRequest } from '../../../lib/shared/dto/pagination';
 import { createPageableResponse } from '../../../lib/utils/mapper/pagination';
 import { mapProductPriceEntitiesToProductPriceResponses } from '../../../lib/utils/mapper/productPrice';
 

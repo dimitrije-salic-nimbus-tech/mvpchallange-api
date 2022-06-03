@@ -1,4 +1,4 @@
-import { PageableItems } from '../../../dto/pagination';
+import { PageableItems } from '../../../shared/dto/pagination';
 
 export const createPageableResponse = <R>(
   items: R[],

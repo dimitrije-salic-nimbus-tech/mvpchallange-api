@@ -21,7 +21,9 @@ var constants_1 = require("../../utils/constants");
 var UserAlreadyExistsException = /** @class */ (function (_super) {
     __extends(UserAlreadyExistsException, _super);
     function UserAlreadyExistsException() {
-        return _super.call(this, constants_1.BAD_REQUEST, constants_1.USER_ALREADY_EXISTS) || this;
+        var _this = _super.call(this, constants_1.BAD_REQUEST, constants_1.USER_ALREADY_EXISTS) || this;
+        Object.setPrototypeOf(_this, UserAlreadyExistsException.prototype);
+        return _this;
     }
     return UserAlreadyExistsException;
 }(BaseException_1.BaseException));

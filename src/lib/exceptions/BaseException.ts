@@ -4,5 +4,7 @@ export abstract class BaseException extends Error {
   constructor(type: string, message: string) {
     super(message);
     this.type = type;
+
+    Object.setPrototypeOf(this, BaseException.prototype);
   }
 }

@@ -21,7 +21,9 @@ var constants_1 = require("../../utils/constants");
 var NotEnoughDeposit = /** @class */ (function (_super) {
     __extends(NotEnoughDeposit, _super);
     function NotEnoughDeposit() {
-        return _super.call(this, constants_1.BAD_REQUEST, constants_1.NOT_ENOUGH_DEPOSIT) || this;
+        var _this = _super.call(this, constants_1.BAD_REQUEST, constants_1.NOT_ENOUGH_DEPOSIT) || this;
+        Object.setPrototypeOf(_this, NotEnoughDeposit.prototype);
+        return _this;
     }
     return NotEnoughDeposit;
 }(BaseException_1.BaseException));

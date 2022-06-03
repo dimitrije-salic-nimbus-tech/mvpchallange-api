@@ -21,7 +21,9 @@ var constants_1 = require("../../utils/constants");
 var ResourceNotFoundException = /** @class */ (function (_super) {
     __extends(ResourceNotFoundException, _super);
     function ResourceNotFoundException() {
-        return _super.call(this, constants_1.NOT_FOUND, constants_1.RESOURCE_NOT_FOUND) || this;
+        var _this = _super.call(this, constants_1.NOT_FOUND, constants_1.RESOURCE_NOT_FOUND) || this;
+        Object.setPrototypeOf(_this, ResourceNotFoundException.prototype);
+        return _this;
     }
     return ResourceNotFoundException;
 }(BaseException_1.BaseException));

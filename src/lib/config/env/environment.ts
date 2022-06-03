@@ -1,5 +1,5 @@
 import * as dotenv from 'dotenv';
-import { EnvType, ServiceEnvironmentType } from '../../types';
+import { EnvType, ServiceEnvironmentType } from '../../shared/types';
 
 dotenv.config({
   path: `${__dirname}/../../../../.env.${process.env.NODE_ENV}`,

@@ -10,4 +10,4 @@ exports.PRODUCT_ALREADY_EXISTS = 'Product with the same name already exists';
 exports.RESOURCE_NOT_FOUND = "Resource is not found";
 exports.INCORRECT_PRICE = 'Incorrect price value';
 exports.NOT_ENOUGH_DEPOSIT = 'Not enough deposit';
-exports.NOT_ENOUGH_PRODUCT_AMOUNT = 'Not enough product amount';
+exports.NOT_ENOUGH_PRODUCT_AMOUNT = 'Not enough user amount';

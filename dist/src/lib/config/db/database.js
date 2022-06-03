@@ -44,7 +44,7 @@ var connection = null;
 var configureDatabase = function () { return __awaiter(void 0, void 0, void 0, function () {
     return __generator(this, function (_a) {
         if (connection) {
-            return [2 /*return*/];
+            return [2 /*return*/, connection];
         }
         return [2 /*return*/, (0, typeorm_1.createConnection)({
                 database: env_1.environment.database.name,
@@ -58,7 +58,7 @@ var configureDatabase = function () { return __awaiter(void 0, void 0, void 0, f
                 synchronize: env_1.environment.env === 'test',
                 type: 'postgres',
                 username: env_1.environment.database.user,
-            }).then(function () { return Promise.resolve(); })];
+            })];
     });
 }); };
 exports.configureDatabase = configureDatabase;

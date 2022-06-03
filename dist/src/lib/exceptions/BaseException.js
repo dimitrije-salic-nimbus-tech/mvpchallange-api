@@ -21,6 +21,7 @@ var BaseException = /** @class */ (function (_super) {
     function BaseException(type, message) {
         var _this = _super.call(this, message) || this;
         _this.type = type;
+        Object.setPrototypeOf(_this, BaseException.prototype);
         return _this;
     }
     return BaseException;

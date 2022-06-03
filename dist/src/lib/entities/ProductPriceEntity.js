@@ -41,6 +41,11 @@ var ProductPriceEntity = /** @class */ (function (_super) {
     ], ProductPriceEntity.prototype, "price", void 0);
     __decorate([
         (0, class_transformer_1.Expose)(),
+        (0, typeorm_1.Column)(),
+        __metadata("design:type", String)
+    ], ProductPriceEntity.prototype, "productId", void 0);
+    __decorate([
+        (0, class_transformer_1.Expose)(),
         (0, typeorm_1.ManyToOne)(function () { return ProductEntity_1.ProductEntity; }, function (product) { return product.prices; }, { onDelete: 'CASCADE' }),
         __metadata("design:type", ProductEntity_1.ProductEntity)
     ], ProductPriceEntity.prototype, "product", void 0);

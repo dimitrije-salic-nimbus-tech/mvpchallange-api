@@ -2,7 +2,7 @@ import { Column, Entity, OneToMany } from 'typeorm';
 import { Expose } from 'class-transformer';
 
 import { BaseEntity } from './BaseEntity';
-import { RoleEnum } from '../enums';
+import { RoleEnum } from '../shared/enums';
 import { ProductEntity } from './ProductEntity';
 
 @Entity({ name: 'user' })

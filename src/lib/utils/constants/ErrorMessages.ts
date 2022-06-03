@@ -7,4 +7,4 @@ export const PRODUCT_ALREADY_EXISTS = 'Product with the same name already exists
 export const RESOURCE_NOT_FOUND = `Resource is not found`;
 export const INCORRECT_PRICE = 'Incorrect price value';
 export const NOT_ENOUGH_DEPOSIT = 'Not enough deposit';
-export const NOT_ENOUGH_PRODUCT_AMOUNT = 'Not enough product amount';
+export const NOT_ENOUGH_PRODUCT_AMOUNT = 'Not enough user amount';

@@ -4,10 +4,10 @@ import { NextFunction, Request, Response, Router } from 'express';
 import { productSchemas } from './ProductSchemas';
 import { productService, vendingMachineService } from '../../service';
 import { BuyProductRequest, CreateProductRequest, UpdateProductRequest } from '../../dto/request';
-import { queryPaginationSchemas } from '../../../pagination';
+import { queryPaginationSchemas } from '../../../../lib/utils/validation/pagination';
 import { createPageableRequest } from '../../../../lib/utils/mapper/pagination';
-import { QueryParamsPaginationType } from '../../../../lib/types';
-import { PageableItems } from '../../../../lib/dto/pagination';
+import { QueryParamsPaginationType } from '../../../../lib/shared/types';
+import { PageableItems } from '../../../../lib/shared/dto/pagination';
 import { BuyProductResponse, ProductResponse } from '../../dto/response';
 
 const router = Router();

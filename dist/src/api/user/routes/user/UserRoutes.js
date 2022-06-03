@@ -4,7 +4,7 @@ var express_1 = require("express");
 var celebrate_1 = require("celebrate");
 var service_1 = require("../../service");
 var UserSchemas_1 = require("./UserSchemas");
-var pagination_1 = require("../../../pagination");
+var pagination_1 = require("../../../../lib/utils/validation/pagination");
 var pagination_2 = require("../../../../lib/utils/mapper/pagination");
 var router = (0, express_1.Router)();
 router.post('/', [(0, celebrate_1.celebrate)(UserSchemas_1.userSchemas.createUserSchema)], function (req, res, next) {
@@ -28,16 +28,13 @@ router.get('/:id', [(0, celebrate_1.celebrate)(UserSchemas_1.userSchemas.getUser
         .then(function (user) { return res.send(user); })
         .catch(next);
 });
-router.patch('/:id', [
-    (0, celebrate_1.celebrate)(UserSchemas_1.userSchemas.updateUserSchema),
-    function (req, res, next) {
-        var body = req.body, params = req.params;
-        service_1.userService
-            .updateUser(params.id, body)
-            .then(function () { return res.send(); })
-            .catch(next);
-    },
-]);
+router.patch('/:id', [(0, celebrate_1.celebrate)(UserSchemas_1.userSchemas.updateUserSchema)], function (req, res, next) {
+    var body = req.body, params = req.params;
+    service_1.userService
+        .updateUser(params.id, body)
+        .then(function () { return res.send(); })
+        .catch(next);
+});
 router.delete('/:id', [(0, celebrate_1.celebrate)(UserSchemas_1.userSchemas.getUserSchema)], function (req, res, next) {
     var id = req.params.id;
     service_1.userService

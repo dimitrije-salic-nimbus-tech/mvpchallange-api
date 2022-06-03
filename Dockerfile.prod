@@ -1,0 +1,21 @@
+FROM node:12.17.0-alpine AS base
+WORKDIR /home/mvp
+COPY package*.json ./
+COPY . .
+COPY ./.docker/.env.docker.test ./.env.test
+COPY ./.docker/.env.docker.prod ./.env.prod
+
+FROM base AS build
+RUN npm i && npm run build
+
+FROM base AS build-release
+COPY --from=build /home/mvp/dist ./dist
+COPY --from=build /home/mvp/.env.test ./dist/.env.test
+COPY --from=build /home/mvp/.env.prod ./dist/.env.prod
+RUN npm i --production
+
+FROM build-release AS release
+WORKDIR /home/mvp
+ENV NODE_ENV=prod
+EXPOSE 3000
+CMD ["node", "dist/src/index.js"]

@@ -21,7 +21,9 @@ var constants_1 = require("../../utils/constants");
 var ProductAlreadyExistsException = /** @class */ (function (_super) {
     __extends(ProductAlreadyExistsException, _super);
     function ProductAlreadyExistsException() {
-        return _super.call(this, constants_1.BAD_REQUEST, constants_1.PRODUCT_ALREADY_EXISTS) || this;
+        var _this = _super.call(this, constants_1.BAD_REQUEST, constants_1.PRODUCT_ALREADY_EXISTS) || this;
+        Object.setPrototypeOf(_this, ProductAlreadyExistsException.prototype);
+        return _this;
     }
     return ProductAlreadyExistsException;
 }(BaseException_1.BaseException));

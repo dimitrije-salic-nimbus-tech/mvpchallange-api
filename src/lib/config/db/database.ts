@@ -5,9 +5,9 @@ import { environment } from '../env';
 
 let connection: Connection | null = null;
 
-export const configureDatabase = async (): Promise<void> => {
+export const configureDatabase = async (): Promise<Connection> => {
   if (connection) {
-    return;
+    return connection;
   }
 
   return createConnection({
@@ -22,7 +22,7 @@ export const configureDatabase = async (): Promise<void> => {
     synchronize: environment.env === 'test',
     type: 'postgres',
     username: environment.database.user,
-  }).then(() => Promise.resolve());
+  });
 };
 
 export const closeConnection = async (): Promise<void> => {

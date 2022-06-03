@@ -1,6 +1,7 @@
 # IDE
 .idea
 .vscode
+.DS_STORE
 
 # NodeJS
 node_modules/
@@ -15,3 +16,7 @@ coverage/
 
 # Docker
 .docker/volumes/
+
+yarn-error.log
+
+dist/

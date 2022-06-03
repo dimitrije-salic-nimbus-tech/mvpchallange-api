@@ -1,5 +1,5 @@
 import { Joi, Segments } from 'celebrate';
-import { queryPaginationSchemas } from '../../../pagination';
+import { queryPaginationSchemas } from '../../../../lib/utils/validation/pagination';
 
 const getPricesHistoryByProductSchema = {
   [Segments.PARAMS]: Joi.object().keys({

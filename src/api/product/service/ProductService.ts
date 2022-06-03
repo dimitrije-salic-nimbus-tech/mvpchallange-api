@@ -4,7 +4,7 @@ import { ProductAlreadyExistsException } from '../../../lib/exceptions/product';
 import { ProductEntity } from '../../../lib/entities/ProductEntity';
 import { mapToClass } from '../../../lib/utils/mapper';
 import { userService } from '../../user/service';
-import { productPriceService } from '../../productPrice/service';
+import { productPriceService } from './ProductPriceService';
 import { UserResponse } from '../../user/dto/response';
 import { ProductResponse } from '../dto/response';
 import {
@@ -13,7 +13,7 @@ import {
   mapProductEntityToProductResponse,
 } from '../../../lib/utils/mapper/product';
 import { ResourceNotFoundException } from '../../../lib/exceptions/shared';
-import { PageableItems, PageableRequest } from '../../../lib/dto/pagination';
+import { PageableItems, PageableRequest } from '../../../lib/shared/dto/pagination';
 import { createPageableResponse } from '../../../lib/utils/mapper/pagination';
 import { IncorrectPriceValueException } from '../../../lib/exceptions/product';
 
@@ -70,8 +70,8 @@ const getProducts = async (query: PageableRequest): Promise<PageableItems<Produc
 
   const [items, count] = await productRepository
     .createQueryBuilder('product')
-    .leftJoinAndSelect('product.prices', 'prices')
-    .leftJoinAndSelect('product.seller', 'seller')
+    .leftJoinAndSelect('user.prices', 'prices')
+    .leftJoinAndSelect('user.seller', 'seller')
     .skip(offset)
     .take(limit)
     .getManyAndCount();

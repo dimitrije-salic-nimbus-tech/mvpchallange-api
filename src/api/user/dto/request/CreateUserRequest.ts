@@ -1,4 +1,4 @@
-import { RoleEnum } from '../../../../lib/enums';
+import { RoleEnum } from '../../../../lib/shared/enums';
 
 export class CreateUserRequest {
   username!: string;

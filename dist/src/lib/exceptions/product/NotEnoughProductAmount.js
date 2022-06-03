@@ -22,7 +22,7 @@ var NotEnoughProductAmount = /** @class */ (function (_super) {
     __extends(NotEnoughProductAmount, _super);
     function NotEnoughProductAmount() {
         var _this = _super.call(this, constants_1.BAD_REQUEST, constants_1.NOT_ENOUGH_PRODUCT_AMOUNT) || this;
-        _this.name = 'NotEnoughProductAmount';
+        Object.setPrototypeOf(_this, NotEnoughProductAmount.prototype);
         return _this;
     }
     return NotEnoughProductAmount;

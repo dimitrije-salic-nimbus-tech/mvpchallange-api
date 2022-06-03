@@ -1,17 +1,17 @@
 import { NextFunction, Request, Response, Router } from 'express';
 import { celebrate } from 'celebrate';
 
-import { QueryParamsPaginationType } from '../../../../lib/types';
+import { QueryParamsPaginationType } from '../../../../lib/shared/types';
 import { productPriceService } from '../../service';
 import { createPageableRequest } from '../../../../lib/utils/mapper/pagination';
 import { productPriceSchemas } from './ProductPricesSchemas';
-import { PageableItems } from '../../../../lib/dto/pagination';
+import { PageableItems } from '../../../../lib/shared/dto/pagination';
 import { ProductPriceResponse } from '../../dto/response';
 
 const router = Router();
 
 router.get(
-  '/:id/product',
+  '/:id/user',
   [celebrate(productPriceSchemas.getPricesHistoryByProductSchema)],
   (req: Request<{ id: string }, any, {}, QueryParamsPaginationType>, res: Response, next: NextFunction) => {
     const { query, params } = req;

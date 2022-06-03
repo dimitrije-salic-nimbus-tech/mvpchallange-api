@@ -4,7 +4,7 @@ var celebrate_1 = require("celebrate");
 var express_1 = require("express");
 var ProductSchemas_1 = require("./ProductSchemas");
 var service_1 = require("../../service");
-var pagination_1 = require("../../../pagination");
+var pagination_1 = require("../../../../lib/utils/validation/pagination");
 var pagination_2 = require("../../../../lib/utils/mapper/pagination");
 var router = (0, express_1.Router)();
 router.post('/:id/user', [(0, celebrate_1.celebrate)(ProductSchemas_1.productSchemas.createProductSchema)], function (req, res, next) {

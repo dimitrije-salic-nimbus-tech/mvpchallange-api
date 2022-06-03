@@ -28,7 +28,7 @@ exports.UserEntity = void 0;
 var typeorm_1 = require("typeorm");
 var class_transformer_1 = require("class-transformer");
 var BaseEntity_1 = require("./BaseEntity");
-var enums_1 = require("../enums");
+var enums_1 = require("../shared/enums");
 var ProductEntity_1 = require("./ProductEntity");
 var UserEntity = /** @class */ (function (_super) {
     __extends(UserEntity, _super);

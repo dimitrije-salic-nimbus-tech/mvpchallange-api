@@ -1,5 +1,5 @@
-import { QueryParamsPaginationType } from '../../../types';
-import { PageableRequest } from '../../../dto/pagination';
+import { QueryParamsPaginationType } from '../../../shared/types';
+import { PageableRequest } from '../../../shared/dto/pagination';
 
 export const createPageableRequest = (request: QueryParamsPaginationType): PageableRequest => ({
   limit: +request.limit!,

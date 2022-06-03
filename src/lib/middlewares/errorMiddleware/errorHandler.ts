@@ -10,7 +10,7 @@ import {
   NotEnoughDeposit,
 } from '../../exceptions/product';
 import { ResourceNotFoundException } from '../../exceptions/shared';
-import { ErrorResponse } from '../../dto/error';
+import { ErrorResponse } from '../../shared/dto/error';
 
 // @ts-ignore
 const isBadRequest = (exception): boolean =>

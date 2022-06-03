@@ -42,7 +42,7 @@ var product_1 = require("../../../lib/exceptions/product");
 var ProductEntity_1 = require("../../../lib/entities/ProductEntity");
 var mapper_1 = require("../../../lib/utils/mapper");
 var service_1 = require("../../user/service");
-var service_2 = require("../../productPrice/service");
+var ProductPriceService_1 = require("./ProductPriceService");
 var product_2 = require("../../../lib/utils/mapper/product");
 var shared_1 = require("../../../lib/exceptions/shared");
 var pagination_1 = require("../../../lib/utils/mapper/pagination");
@@ -71,7 +71,7 @@ var createProduct = function (id, request) { return __awaiter(void 0, void 0, vo
                 productForCreate = (0, mapper_1.mapToClass)({ name: name, amountAvailable: amountAvailable, sellerId: seller.id }, ProductEntity_1.ProductEntity);
                 return [2 /*return*/, productRepository
                         .save(productForCreate)
-                        .then(function (product) { return service_2.productPriceService.createProductPrice(price, product); })];
+                        .then(function (product) { return ProductPriceService_1.productPriceService.createProductPrice(price, product); })];
         }
     });
 }); };
@@ -103,8 +103,8 @@ var getProducts = function (query) { return __awaiter(void 0, void 0, void 0, fu
                 productRepository = _b.sent();
                 return [4 /*yield*/, productRepository
                         .createQueryBuilder('product')
-                        .leftJoinAndSelect('product.prices', 'prices')
-                        .leftJoinAndSelect('product.seller', 'seller')
+                        .leftJoinAndSelect('user.prices', 'prices')
+                        .leftJoinAndSelect('user.seller', 'seller')
                         .skip(offset)
                         .take(limit)
                         .getManyAndCount()];
@@ -143,7 +143,7 @@ var updateProduct = function (id, request) { return __awaiter(void 0, void 0, vo
                 if (request.price < 0 || request.price === (0, product_2.getCurrentPrice)(product.prices)) {
                     throw new product_3.IncorrectPriceValueException(); // TODO: use decorator
                 }
-                return [4 /*yield*/, service_2.productPriceService.createProductPrice(request.price, product)];
+                return [4 /*yield*/, ProductPriceService_1.productPriceService.createProductPrice(request.price, product)];
             case 6:
                 _a.sent();
                 _a.label = 7;

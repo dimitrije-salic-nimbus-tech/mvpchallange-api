@@ -4,11 +4,11 @@ import { celebrate } from 'celebrate';
 import { userService, userDepositService } from '../../service';
 import { UserResponse } from '../../dto/response';
 import { userSchemas } from './UserSchemas';
-import { PageableItems } from '../../../../lib/dto/pagination';
+import { PageableItems } from '../../../../lib/shared/dto/pagination';
 import { ChangeDepositRequest, CreateUserRequest } from '../../dto/request';
 import { UpdateUserRequest } from '../../dto/request';
-import { queryPaginationSchemas } from '../../../pagination';
-import { QueryParamsPaginationType } from '../../../../lib/types';
+import { queryPaginationSchemas } from '../../../../lib/utils/validation/pagination';
+import { QueryParamsPaginationType } from '../../../../lib/shared/types';
 import { createPageableRequest } from '../../../../lib/utils/mapper/pagination';
 
 const router = Router();
@@ -52,8 +52,9 @@ router.get(
   },
 );
 
-router.patch('/:id', [
-  celebrate(userSchemas.updateUserSchema),
+router.patch(
+  '/:id',
+  [celebrate(userSchemas.updateUserSchema)],
   (req: Request<{ id: string }, any, UpdateUserRequest>, res: Response, next: NextFunction) => {
     const { body, params } = req;
 
@@ -62,7 +63,7 @@ router.patch('/:id', [
       .then(() => res.send())
       .catch(next);
   },
-]);
+);
 
 router.delete(
   '/:id',

@@ -7,7 +7,7 @@ import { ResourceNotFoundException } from '../../../lib/exceptions/shared';
 import { mapUserEntitiesToUserResponses, mapUserEntityToUserResponse } from '../../../lib/utils/mapper/user';
 import { UserEntity } from '../../../lib/entities/UserEntity';
 import { UpdateUserRequest } from '../dto/request';
-import { PageableItems, PageableRequest } from '../../../lib/dto/pagination';
+import { PageableItems, PageableRequest } from '../../../lib/shared/dto/pagination';
 import { createPageableResponse } from '../../../lib/utils/mapper/pagination';
 
 interface IUserService {

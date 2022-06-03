@@ -21,7 +21,9 @@ var constants_1 = require("../../utils/constants");
 var IncorrectPriceValueException = /** @class */ (function (_super) {
     __extends(IncorrectPriceValueException, _super);
     function IncorrectPriceValueException() {
-        return _super.call(this, constants_1.BAD_REQUEST, constants_1.INCORRECT_PRICE) || this;
+        var _this = _super.call(this, constants_1.BAD_REQUEST, constants_1.INCORRECT_PRICE) || this;
+        Object.setPrototypeOf(_this, IncorrectPriceValueException.prototype);
+        return _this;
     }
     return IncorrectPriceValueException;
 }(BaseException_1.BaseException));

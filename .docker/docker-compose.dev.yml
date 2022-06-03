@@ -1,0 +1,40 @@
+version: '3.7'
+
+services:
+  mvpmatch-db-dev:
+    image: postgres
+    restart: always
+    ports:
+      - '5432:5432'
+    env_file:
+      - .env.docker.dev
+    volumes:
+      - ./volumes/postgres:/var/lib/postgresql/data
+      - ./db-provision:/docker-entrypoint-initdb.d/
+  mvpmatch-db-test:
+    image: postgres
+    restart: always
+    ports:
+      - '5433:5433'
+    env_file:
+      - .env.docker.test
+    volumes:
+      - ./volumes/postgres:/var/lib/postgresql/data
+      - ./db-provision:/docker-entrypoint-initdb.d/
+    command: -p 5433
+  app:
+    build:
+      context: ../
+      dockerfile: ./Dockerfile.dev
+    volumes:
+      - ./:/home/node/mvpmatch-api
+    ports:
+      - '3000:3000'
+    env_file:
+      - .env.docker.dev
+  redis:
+    image: 'redis:alpine'
+    expose:
+      - 6379
+    ports:
+      - '6379:6379'
