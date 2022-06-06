@@ -13,6 +13,7 @@ var configureRoutes = function (app) {
     app.use('/api/products', product_1.productRoutes);
     app.use('/api/user-prices', productPrice_1.productPriceRoutes);
     app.use('/api/cognito', routes_1.cognitoRoutes);
+    app.use('/api/auth', routes_1.authRoutes);
     app.use(errorMiddleware_1.errorHandler);
 };
 exports.configureRoutes = configureRoutes;

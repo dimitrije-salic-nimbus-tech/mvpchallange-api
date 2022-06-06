@@ -39,31 +39,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.userService = void 0;
 var repositories_1 = require("../../../lib/repositories");
 var user_1 = require("../../../lib/exceptions/user");
-var mapper_1 = require("../../../lib/utils/mapper");
 var shared_1 = require("../../../lib/exceptions/shared");
 var user_2 = require("../../../lib/utils/mapper/user");
-var UserEntity_1 = require("../../../lib/entities/UserEntity");
 var pagination_1 = require("../../../lib/utils/mapper/pagination");
-var createUser = function (request) { return __awaiter(void 0, void 0, void 0, function () {
-    var username, role, userRepository, userExists, userForCreate;
-    return __generator(this, function (_a) {
-        switch (_a.label) {
-            case 0:
-                username = request.username, role = request.role;
-                return [4 /*yield*/, (0, repositories_1.getUserRepository)()];
-            case 1:
-                userRepository = _a.sent();
-                return [4 /*yield*/, userRepository.findOne({ where: { username: username } })];
-            case 2:
-                userExists = _a.sent();
-                if (userExists) {
-                    throw new user_1.UserAlreadyExistsException();
-                }
-                userForCreate = (0, mapper_1.mapToClass)({ username: username, role: role }, UserEntity_1.UserEntity);
-                return [2 /*return*/, userRepository.save(userForCreate).then(function () { return Promise.resolve(); })];
-        }
-    });
-}); };
 var getUser = function (id) { return __awaiter(void 0, void 0, void 0, function () {
     var userRepository, user;
     return __generator(this, function (_a) {
@@ -128,7 +106,6 @@ var deleteUser = function (id) { return __awaiter(void 0, void 0, void 0, functi
     });
 }); };
 exports.userService = {
-    createUser: createUser,
     getUser: getUser,
     getUsers: getUsers,
     updateUser: updateUser,

@@ -1,37 +1,18 @@
-import { CreateUserRequest } from '../dto/request';
 import { getUserRepository } from '../../../lib/repositories';
 import { UserAlreadyExistsException } from '../../../lib/exceptions/user';
-import { mapToClass } from '../../../lib/utils/mapper';
 import { UserResponse } from '../dto/response';
 import { ResourceNotFoundException } from '../../../lib/exceptions/shared';
 import { mapUserEntitiesToUserResponses, mapUserEntityToUserResponse } from '../../../lib/utils/mapper/user';
-import { UserEntity } from '../../../lib/entities/UserEntity';
 import { UpdateUserRequest } from '../dto/request';
 import { PageableItems, PageableRequest } from '../../../lib/shared/dto/pagination';
 import { createPageableResponse } from '../../../lib/utils/mapper/pagination';
 
 interface IUserService {
-  createUser: (request: CreateUserRequest) => Promise<void>;
   getUser: (id: string) => Promise<UserResponse>; // TODO: move get methods to another service (UserQueryService)
   getUsers: (query: PageableRequest) => Promise<PageableItems<UserResponse>>;
   updateUser: (id: string, request: Partial<UpdateUserRequest>) => Promise<void>;
   deleteUser: (id: string) => Promise<void>;
 }
-
-const createUser = async (request: CreateUserRequest): Promise<void> => {
-  const { username, role } = request;
-
-  const userRepository = await getUserRepository();
-  const userExists = await userRepository.findOne({ where: { username } });
-
-  if (userExists) {
-    throw new UserAlreadyExistsException();
-  }
-
-  const userForCreate: Partial<UserEntity> = mapToClass<UserEntity>({ username, role }, UserEntity);
-
-  return userRepository.save(userForCreate).then(() => Promise.resolve());
-};
 
 const getUser = async (id: string): Promise<UserResponse> => {
   const userRepository = await getUserRepository();
@@ -73,7 +54,6 @@ const deleteUser = async (id: string): Promise<void> => {
 };
 
 export const userService: IUserService = {
-  createUser,
   getUser,
   getUsers,
   updateUser,

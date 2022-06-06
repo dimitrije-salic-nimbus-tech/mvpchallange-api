@@ -70,8 +70,8 @@ const getProducts = async (query: PageableRequest): Promise<PageableItems<Produc
 
   const [items, count] = await productRepository
     .createQueryBuilder('product')
-    .leftJoinAndSelect('user.prices', 'prices')
-    .leftJoinAndSelect('user.seller', 'seller')
+    .leftJoinAndSelect('product.prices', 'prices')
+    .leftJoinAndSelect('product.seller', 'seller')
     .skip(offset)
     .take(limit)
     .getManyAndCount();

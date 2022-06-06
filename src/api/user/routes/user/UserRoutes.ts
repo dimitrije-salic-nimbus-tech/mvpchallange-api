@@ -5,26 +5,13 @@ import { userService, userDepositService } from '../../service';
 import { UserResponse } from '../../dto/response';
 import { userSchemas } from './UserSchemas';
 import { PageableItems } from '../../../../lib/shared/dto/pagination';
-import { ChangeDepositRequest, CreateUserRequest } from '../../dto/request';
+import { ChangeDepositRequest } from '../../dto/request';
 import { UpdateUserRequest } from '../../dto/request';
 import { queryPaginationSchemas } from '../../../../lib/utils/validation/pagination';
 import { QueryParamsPaginationType } from '../../../../lib/shared/types';
 import { createPageableRequest } from '../../../../lib/utils/mapper/pagination';
 
 const router = Router();
-
-router.post(
-  '/',
-  [celebrate(userSchemas.createUserSchema)],
-  (req: Request<{}, any, CreateUserRequest>, res: Response, next: NextFunction) => {
-    const { body } = req;
-
-    userService
-      .createUser(body)
-      .then(() => res.status(201).send())
-      .catch(next);
-  },
-);
 
 router.get(
   '/',

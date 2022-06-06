@@ -7,13 +7,6 @@ var UserSchemas_1 = require("./UserSchemas");
 var pagination_1 = require("../../../../lib/utils/validation/pagination");
 var pagination_2 = require("../../../../lib/utils/mapper/pagination");
 var router = (0, express_1.Router)();
-router.post('/', [(0, celebrate_1.celebrate)(UserSchemas_1.userSchemas.createUserSchema)], function (req, res, next) {
-    var body = req.body;
-    service_1.userService
-        .createUser(body)
-        .then(function () { return res.status(201).send(); })
-        .catch(next);
-});
 router.get('/', [(0, celebrate_1.celebrate)(pagination_1.queryPaginationSchemas.queryPagination)], function (req, res, next) {
     var query = req.query;
     service_1.userService

@@ -67,6 +67,6 @@ export const errorHandler = (err: any, req: Request, res: Response, next: NextFu
     return;
   }
 
-  console.log('Unknown error'); // TODO: add logger
+  console.log('Unknown error', err); // TODO: add logger
   res.status(500).send(createInternalServerError(err));
 };

@@ -17,7 +17,7 @@ export const auth = (req: Request, res: Response, next: NextFunction) => {
     tokenUse: environment.cognito.tokenUse,
     tokenExpiration: environment.cognito.tokenExpiration,
   });
-  let accessTokenFromClient = req.headers.accesstoken;
+  const accessTokenFromClient = req.headers.accesstoken;
 
   if (!accessTokenFromClient) {
     throw new AuthenticationFailedException();
