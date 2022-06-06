@@ -21,5 +21,13 @@ export const environment: ServiceEnvironmentType = {
     domainName: process.env.AUTH_DOMAIN || 'Enter your domain name',
     clientId: process.env.CLIENT_ID || 'Enter your client id',
     redirectUri: process.env.REDIRECT_URI || 'Enter your redirect uri',
+    poolId: process.env.POOL_ID || 'Enter your pool id',
+    region: process.env.REGION || 'Enter region',
+    tokenUse: process.env.TOKEN_USE || 'Enter token use',
+    tokenExpiration: +(process.env.TOKEN_EXPIRATION || 3600000),
+  },
+  redis: {
+    port: +(process.env.REDIS_PORT || 6379),
+    host: process.env.REDIS_HOST || 'localhost',
   },
 };

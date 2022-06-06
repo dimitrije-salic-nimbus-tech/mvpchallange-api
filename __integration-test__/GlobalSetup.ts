@@ -1,8 +1,10 @@
+import { Application } from 'express';
+
 import { configureDatabase, closeConnection } from '../src/lib/config/db';
 import { configureServer } from '../src/lib/config/server';
 import { configureRoutes } from '../src/lib/routes/configureRoutes';
 
-let app = null;
+let app: Application | null = null;
 
 global.beforeAll(async () => {
   app = configureServer();

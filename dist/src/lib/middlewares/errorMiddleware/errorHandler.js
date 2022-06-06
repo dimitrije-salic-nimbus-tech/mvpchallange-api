@@ -6,6 +6,7 @@ var constants_1 = require("../../utils/constants");
 var user_1 = require("../../exceptions/user");
 var product_1 = require("../../exceptions/product");
 var shared_1 = require("../../exceptions/shared");
+var AuthenticationFailedException_1 = require("../../exceptions/shared/AuthenticationFailedException");
 // @ts-ignore
 var isBadRequest = function (exception) {
     return exception instanceof user_1.UserAlreadyExistsException ||
@@ -17,6 +18,7 @@ var isBadRequest = function (exception) {
 };
 // @ts-ignore
 var isNotFount = function (exception) { return exception instanceof shared_1.ResourceNotFoundException; };
+var isUnauthorized = function (exception) { return exception instanceof AuthenticationFailedException_1.AuthenticationFailedException; };
 // @ts-ignore
 var createBadRequestError = function (exception) { return ({
     httpStatus: constants_1.BAD_REQUEST,
@@ -32,6 +34,11 @@ var createInternalServerError = function (exception) { return ({
     httpStatus: constants_1.INTERNAL_SERVER_ERROR,
     message: constants_1.UNKNOWN_ERROR,
 }); };
+// @ts-ignore
+var createUnauthorizedError = function (exception) { return ({
+    httpStatus: constants_1.UNAUTHORIZED,
+    message: exception === null || exception === void 0 ? void 0 : exception.message,
+}); };
 var errorHandler = function (err, req, res, next) {
     if (isBadRequest(err)) {
         res.status(400).send(createBadRequestError(err));
@@ -39,6 +46,10 @@ var errorHandler = function (err, req, res, next) {
     }
     if (isNotFount(err)) {
         res.status(404).send(createNotFoundError(err));
+        return;
+    }
+    if (isUnauthorized(err)) {
+        res.status(401).send(createUnauthorizedError(err));
         return;
     }
     console.log('Unknown error'); // TODO: add logger

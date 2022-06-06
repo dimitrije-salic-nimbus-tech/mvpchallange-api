@@ -1,3 +1,4 @@
-import { authService } from './AuthService';
+import { cognitoService } from './CognitoService';
+import { cacheService } from './CacheService';
 
-export { authService };
+export { cognitoService, cacheService };

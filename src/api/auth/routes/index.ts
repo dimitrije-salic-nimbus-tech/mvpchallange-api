@@ -1,3 +1,3 @@
-import authRoutes from './AuthRoutes';
+import cognitoRoutes from './CognitoRoutes';
 
-export { authRoutes };
+export { cognitoRoutes };
