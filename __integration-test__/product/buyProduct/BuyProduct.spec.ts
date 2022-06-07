@@ -1,8 +1,11 @@
 import request from 'supertest';
 
-import { getUserRepository } from '../../../src/lib/repositories';
-import { getProductRepository } from '../../../src/lib/repositories';
-import { getProductPriceRepository } from '../../../src/lib/repositories';
+import {
+  getProductPriceRepository,
+  getProductRepository,
+  getRoleRepository,
+  getUserRepository,
+} from '../../../src/lib/repositories';
 import { mockDatabase } from '../../MockDatabase';
 import { RoleEnum } from '../../../src/lib/shared/enums';
 import { BuyProductRequest } from '../../../src/api/product/dto/request';
@@ -16,6 +19,19 @@ describe('Integration Products', () => {
   describe(`POST ${buyProductUrl(':id')}`, () => {
     beforeEach(async () => {
       const userRepository = await getUserRepository();
+      const roleRepository = await getRoleRepository();
+      const buyerRoleId: string = 'c7d8f612-b7c9-46bf-9c9b-8fd2cc978bc6';
+      const sellerRoleId: string = '966e02ad-b32c-4306-8070-ca9cbbfe65af';
+      const mockRoleTable = roleRepository.save([
+        {
+          id: buyerRoleId,
+          role: RoleEnum.BUYER,
+        },
+        {
+          id: sellerRoleId,
+          role: RoleEnum.SELLER,
+        },
+      ]);
       const mockUserTable = userRepository.save([
         {
           id: buyerId,
@@ -23,7 +39,7 @@ describe('Integration Products', () => {
           updatedAt: '2022-05-26 07:59:56.253145',
           username: 'user1',
           deposit: 100,
-          role: RoleEnum.BUYER,
+          roleId: buyerRoleId,
         },
         {
           id: sellerId,
@@ -31,7 +47,7 @@ describe('Integration Products', () => {
           updatedAt: '2022-05-26 07:59:56.253145',
           username: 'user2',
           deposit: 0,
-          role: RoleEnum.SELLER,
+          roleId: sellerRoleId,
         },
       ]);
       const productRepository = await getProductRepository();
@@ -52,7 +68,7 @@ describe('Integration Products', () => {
         productId,
       });
 
-      await mockDatabase([mockUserTable, mockProductTable, mockProductPriceTable]);
+      await mockDatabase([mockRoleTable, mockUserTable, mockProductTable, mockProductPriceTable]);
     });
     test('should return status 200', async () => {
       // @ts-ignore

@@ -6,12 +6,15 @@ import { mapUserEntitiesToUserResponses, mapUserEntityToUserResponse } from '../
 import { UpdateUserRequest } from '../dto/request';
 import { PageableItems, PageableRequest } from '../../../lib/shared/dto/pagination';
 import { createPageableResponse } from '../../../lib/utils/mapper/pagination';
+import { RolePermissionEntity } from '../../../lib/entities/RolePermissionEntity';
+import { PermissionActionType } from '../../../lib/shared/types';
 
 interface IUserService {
   getUser: (id: string) => Promise<UserResponse>; // TODO: move get methods to another service (UserQueryService)
   getUsers: (query: PageableRequest) => Promise<PageableItems<UserResponse>>;
   updateUser: (id: string, request: Partial<UpdateUserRequest>) => Promise<void>;
   deleteUser: (id: string) => Promise<void>;
+  getUserPermissions: (username: string) => Promise<PermissionActionType[]>;
 }
 
 const getUser = async (id: string): Promise<UserResponse> => {
@@ -53,9 +56,24 @@ const deleteUser = async (id: string): Promise<void> => {
   return userRepository.delete(id).then(() => Promise.resolve());
 };
 
+const getUserPermissions = async (username: string): Promise<PermissionActionType[]> => {
+  const userRepository = await getUserRepository();
+  const user = await userRepository.findOne({
+    where: { username },
+    relations: ['role', 'role.rolePermissions', 'role.rolePermissions.permission'],
+  });
+
+  if (!user) {
+    throw new ResourceNotFoundException();
+  }
+
+  return user.role.rolePermissions.map((rolePermission: RolePermissionEntity) => rolePermission.permission.permission);
+};
+
 export const userService: IUserService = {
   getUser,
   getUsers,
   updateUser,
   deleteUser,
+  getUserPermissions,
 };

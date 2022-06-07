@@ -103,8 +103,8 @@ var getProducts = function (query) { return __awaiter(void 0, void 0, void 0, fu
                 productRepository = _b.sent();
                 return [4 /*yield*/, productRepository
                         .createQueryBuilder('product')
-                        .leftJoinAndSelect('user.prices', 'prices')
-                        .leftJoinAndSelect('user.seller', 'seller')
+                        .leftJoinAndSelect('product.prices', 'prices')
+                        .leftJoinAndSelect('product.seller', 'seller')
                         .skip(offset)
                         .take(limit)
                         .getManyAndCount()];

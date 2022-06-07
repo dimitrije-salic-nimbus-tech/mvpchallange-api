@@ -28,8 +28,8 @@ exports.UserEntity = void 0;
 var typeorm_1 = require("typeorm");
 var class_transformer_1 = require("class-transformer");
 var BaseEntity_1 = require("./BaseEntity");
-var enums_1 = require("../shared/enums");
 var ProductEntity_1 = require("./ProductEntity");
+var RoleEntity_1 = require("./RoleEntity");
 var UserEntity = /** @class */ (function (_super) {
     __extends(UserEntity, _super);
     function UserEntity() {
@@ -47,8 +47,13 @@ var UserEntity = /** @class */ (function (_super) {
     ], UserEntity.prototype, "deposit", void 0);
     __decorate([
         (0, class_transformer_1.Expose)(),
-        (0, typeorm_1.Column)({ type: 'enum', enum: enums_1.RoleEnum, default: enums_1.RoleEnum.BUYER }),
+        (0, typeorm_1.Column)(),
         __metadata("design:type", String)
+    ], UserEntity.prototype, "roleId", void 0);
+    __decorate([
+        (0, class_transformer_1.Expose)(),
+        (0, typeorm_1.ManyToOne)(function () { return RoleEntity_1.RoleEntity; }, function (role) { return role.users; }, { onDelete: 'CASCADE' }),
+        __metadata("design:type", RoleEntity_1.RoleEntity)
     ], UserEntity.prototype, "role", void 0);
     __decorate([
         (0, class_transformer_1.Expose)(),

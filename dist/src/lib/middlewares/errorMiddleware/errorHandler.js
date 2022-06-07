@@ -6,7 +6,7 @@ var constants_1 = require("../../utils/constants");
 var user_1 = require("../../exceptions/user");
 var product_1 = require("../../exceptions/product");
 var shared_1 = require("../../exceptions/shared");
-var AuthenticationFailedException_1 = require("../../exceptions/shared/AuthenticationFailedException");
+var shared_2 = require("../../exceptions/shared");
 // @ts-ignore
 var isBadRequest = function (exception) {
     return exception instanceof user_1.UserAlreadyExistsException ||
@@ -18,7 +18,8 @@ var isBadRequest = function (exception) {
 };
 // @ts-ignore
 var isNotFount = function (exception) { return exception instanceof shared_1.ResourceNotFoundException; };
-var isUnauthorized = function (exception) { return exception instanceof AuthenticationFailedException_1.AuthenticationFailedException; };
+var isUnauthorized = function (exception) { return exception instanceof shared_2.UnauthorizedException; };
+var isNotAllowed = function (exception) { return exception instanceof shared_1.MethodNotAllowedException; };
 // @ts-ignore
 var createBadRequestError = function (exception) { return ({
     httpStatus: constants_1.BAD_REQUEST,
@@ -39,20 +40,29 @@ var createUnauthorizedError = function (exception) { return ({
     httpStatus: constants_1.UNAUTHORIZED,
     message: exception === null || exception === void 0 ? void 0 : exception.message,
 }); };
+// @ts-ignore
+var createNotAllowedError = function (exception) { return ({
+    httpStatus: constants_1.NOT_ALLOWED,
+    message: exception === null || exception === void 0 ? void 0 : exception.message,
+}); };
 var errorHandler = function (err, req, res, next) {
     if (isBadRequest(err)) {
         res.status(400).send(createBadRequestError(err));
-        return;
-    }
-    if (isNotFount(err)) {
-        res.status(404).send(createNotFoundError(err));
         return;
     }
     if (isUnauthorized(err)) {
         res.status(401).send(createUnauthorizedError(err));
         return;
     }
-    console.log('Unknown error'); // TODO: add logger
+    if (isNotAllowed(err)) {
+        res.status(403).send(createNotAllowedError(err));
+        return;
+    }
+    if (isNotFount(err)) {
+        res.status(404).send(createNotFoundError(err));
+        return;
+    }
+    console.log('Unknown error', err); // TODO: add logger
     res.status(500).send(createInternalServerError(err));
 };
 exports.errorHandler = errorHandler;

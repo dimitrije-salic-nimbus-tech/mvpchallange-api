@@ -1,11 +1,11 @@
-import { Request, Response, NextFunction } from 'express';
+import { NextFunction, Request, Response } from 'express';
 import CognitoExpress from 'cognito-express';
 
 import { environment } from '../../config/env';
-import { AuthenticationFailedException } from '../../exceptions/shared/AuthenticationFailedException';
+import { UnauthorizedException } from '../../exceptions/shared';
 import { unauthorizedRoutes } from '../../utils/auth';
 
-export const auth = (req: Request, res: Response, next: NextFunction) => {
+export const auth = async (req: Request, res: Response, next: NextFunction) => {
   if (Array.from(unauthorizedRoutes).some(([key, value]) => key === req.url && value === req.method)) {
     next();
     return;
@@ -20,15 +20,15 @@ export const auth = (req: Request, res: Response, next: NextFunction) => {
   const accessTokenFromClient = req.headers.accesstoken;
 
   if (!accessTokenFromClient) {
-    throw new AuthenticationFailedException();
+    next(new UnauthorizedException());
   }
 
-  cognitoExpress.validate(accessTokenFromClient, (err, response) => {
-    if (err) {
-      throw new AuthenticationFailedException();
-    }
-
-    res.locals.user = response;
+  try {
+    res.locals.user = await cognitoExpress.validate(accessTokenFromClient);
     next();
-  });
+  } catch (e) {
+    next(new UnauthorizedException());
+  }
+
+
 };

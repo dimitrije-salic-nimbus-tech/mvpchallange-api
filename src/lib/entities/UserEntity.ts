@@ -1,9 +1,9 @@
-import { Column, Entity, OneToMany } from 'typeorm';
+import { Column, Entity, ManyToOne, OneToMany } from 'typeorm';
 import { Expose } from 'class-transformer';
 
 import { BaseEntity } from './BaseEntity';
-import { RoleEnum } from '../shared/enums';
 import { ProductEntity } from './ProductEntity';
+import { RoleEntity } from './RoleEntity';
 
 @Entity({ name: 'user' })
 export class UserEntity extends BaseEntity {
@@ -16,8 +16,12 @@ export class UserEntity extends BaseEntity {
   deposit!: number;
 
   @Expose()
-  @Column({ type: 'enum', enum: RoleEnum, default: RoleEnum.BUYER })
-  role!: RoleEnum; // TODO: buyer and seller two entities (oneToOne relation with user)
+  @Column()
+  roleId!: string;
+
+  @Expose()
+  @ManyToOne(() => RoleEntity, (role: RoleEntity) => role.users, { onDelete: 'CASCADE' })
+  role!: RoleEntity;
 
   @Expose()
   @OneToMany(() => ProductEntity, (product: ProductEntity) => product.seller)

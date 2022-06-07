@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getProductPriceRepository = exports.getProductRepository = exports.getUserRepository = exports.getBaseRepository = void 0;
+exports.getPermissionRepository = exports.getRoleRepository = exports.getProductPriceRepository = exports.getProductRepository = exports.getUserRepository = exports.getBaseRepository = void 0;
 var BaseRepository_1 = require("./BaseRepository");
 Object.defineProperty(exports, "getBaseRepository", { enumerable: true, get: function () { return BaseRepository_1.getBaseRepository; } });
 var UserRepository_1 = require("./UserRepository");
@@ -9,3 +9,7 @@ var ProductRepository_1 = require("./ProductRepository");
 Object.defineProperty(exports, "getProductRepository", { enumerable: true, get: function () { return ProductRepository_1.getProductRepository; } });
 var ProductPriceRepository_1 = require("./ProductPriceRepository");
 Object.defineProperty(exports, "getProductPriceRepository", { enumerable: true, get: function () { return ProductPriceRepository_1.getProductPriceRepository; } });
+var RoleRepository_1 = require("./RoleRepository");
+Object.defineProperty(exports, "getRoleRepository", { enumerable: true, get: function () { return RoleRepository_1.getRoleRepository; } });
+var PermissionRepository_1 = require("./PermissionRepository");
+Object.defineProperty(exports, "getPermissionRepository", { enumerable: true, get: function () { return PermissionRepository_1.getPermissionRepository; } });

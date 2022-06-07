@@ -9,12 +9,13 @@ import { createPageableRequest } from '../../../../lib/utils/mapper/pagination';
 import { QueryParamsPaginationType } from '../../../../lib/shared/types';
 import { PageableItems } from '../../../../lib/shared/dto/pagination';
 import { BuyProductResponse, ProductResponse } from '../../dto/response';
+import { permit } from '../../../../lib/middlewares/permissionMiddleware';
 
 const router = Router();
 
 router.post(
   '/:id/user',
-  [celebrate(productSchemas.createProductSchema)],
+  [celebrate(productSchemas.createProductSchema), permit('product:write')],
   (req: Request<{ id: string }, any, CreateProductRequest>, res: Response, next: NextFunction) => {
     const { body, params } = req;
 
@@ -52,7 +53,7 @@ router.get(
 
 router.patch(
   '/:id',
-  [celebrate(productSchemas.updateProductSchema)],
+  [celebrate(productSchemas.updateProductSchema), permit('product:write')],
   (req: Request<{ id: string }, any, UpdateProductRequest>, res: Response, next: NextFunction) => {
     const { params, body } = req;
 
@@ -65,7 +66,7 @@ router.patch(
 
 router.delete(
   '/:id',
-  [celebrate(productSchemas.getProductSchema)],
+  [celebrate(productSchemas.getProductSchema), permit('product:delete')],
   (req: Request<{ id: string }, any, {}>, res: Response, next: NextFunction) => {
     const { id } = req.params;
 
@@ -78,7 +79,7 @@ router.delete(
 
 router.post(
   '/buy/:id/user',
-  [celebrate(productSchemas.buyProductSchema)],
+  [celebrate(productSchemas.buyProductSchema), permit('deposit:write')],
   (req: Request<{ id: string }, any, BuyProductRequest>, res: Response, next: NextFunction) => {
     const { params, body } = req;
 

@@ -7,12 +7,13 @@ import { createPageableRequest } from '../../../../lib/utils/mapper/pagination';
 import { productPriceSchemas } from './ProductPricesSchemas';
 import { PageableItems } from '../../../../lib/shared/dto/pagination';
 import { ProductPriceResponse } from '../../dto/response';
+import { permit } from '../../../../lib/middlewares/permissionMiddleware';
 
 const router = Router();
 
 router.get(
   '/:id/user',
-  [celebrate(productPriceSchemas.getPricesHistoryByProductSchema)],
+  [celebrate(productPriceSchemas.getPricesHistoryByProductSchema), permit('product:write')],
   (req: Request<{ id: string }, any, {}, QueryParamsPaginationType>, res: Response, next: NextFunction) => {
     const { query, params } = req;
     productPriceService

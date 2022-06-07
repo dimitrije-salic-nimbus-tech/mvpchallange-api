@@ -10,12 +10,13 @@ import { UpdateUserRequest } from '../../dto/request';
 import { queryPaginationSchemas } from '../../../../lib/utils/validation/pagination';
 import { QueryParamsPaginationType } from '../../../../lib/shared/types';
 import { createPageableRequest } from '../../../../lib/utils/mapper/pagination';
+import { permit } from '../../../../lib/middlewares/permissionMiddleware';
 
 const router = Router();
 
 router.get(
   '/',
-  [celebrate(queryPaginationSchemas.queryPagination)],
+  [celebrate(queryPaginationSchemas.queryPagination), permit('user:read')],
   (req: Request<{}, any, {}, QueryParamsPaginationType>, res: Response, next: NextFunction) => {
     const { query } = req;
 
@@ -28,7 +29,7 @@ router.get(
 
 router.get(
   '/:id',
-  [celebrate(userSchemas.getUserSchema)],
+  [celebrate(userSchemas.getUserSchema), permit('user:read')],
   (req: Request<{ id: string }, any, {}>, res: Response, next: NextFunction) => {
     const { params } = req;
 
@@ -41,7 +42,7 @@ router.get(
 
 router.patch(
   '/:id',
-  [celebrate(userSchemas.updateUserSchema)],
+  [celebrate(userSchemas.updateUserSchema), permit('user:write')],
   (req: Request<{ id: string }, any, UpdateUserRequest>, res: Response, next: NextFunction) => {
     const { body, params } = req;
 
@@ -54,7 +55,7 @@ router.patch(
 
 router.delete(
   '/:id',
-  [celebrate(userSchemas.getUserSchema)],
+  [celebrate(userSchemas.getUserSchema), permit('user:delete')],
   (req: Request<{ id: string }, any, {}>, res: Response, next: NextFunction) => {
     const { id } = req.params;
 
@@ -67,7 +68,7 @@ router.delete(
 
 router.post(
   '/:id/add-deposit',
-  [celebrate(userSchemas.addDepositSchema)],
+  [celebrate(userSchemas.addDepositSchema), permit('deposit:write')],
   (req: Request<{ id: string }, any, ChangeDepositRequest>, res: Response, next: NextFunction) => {
     const { params, body } = req;
 
@@ -80,7 +81,7 @@ router.post(
 
 router.post(
   '/:id/reset-deposit',
-  [celebrate(userSchemas.getUserSchema)],
+  [celebrate(userSchemas.getUserSchema), permit('deposit:write')],
   (req: Request<{ id: string }, any, {}>, res: Response, next: NextFunction) => {
     const { id } = req.params;
 

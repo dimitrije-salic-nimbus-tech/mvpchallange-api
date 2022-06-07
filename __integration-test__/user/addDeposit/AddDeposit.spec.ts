@@ -1,6 +1,6 @@
 import request from 'supertest';
 
-import { getUserRepository } from '../../../src/lib/repositories';
+import { getRoleRepository, getUserRepository } from '../../../src/lib/repositories';
 import { mockDatabase } from '../../MockDatabase';
 import { RoleEnum } from '../../../src/lib/shared/enums';
 import { ChangeDepositRequest } from '../../../src/api/user/dto/request';
@@ -12,15 +12,21 @@ describe('Integration Users', () => {
   describe(`POST ${addDepositUrl(':id')}`, () => {
     beforeEach(async () => {
       const userRepository = await getUserRepository();
+      const roleRepository = await getRoleRepository();
+      const roleId: string = 'c7d8f612-b7c9-46bf-9c9b-8fd2cc978bc6';
+      const mockRoleTable = roleRepository.save({
+        id: roleId,
+        role: RoleEnum.BUYER,
+      });
       const mockUserTable = userRepository.save({
         id,
         createdAt: '2022-05-26 07:59:56.253145',
         updatedAt: '2022-05-26 07:59:56.253145',
         username: 'user1',
         deposit: 100,
-        role: RoleEnum.BUYER,
+        roleId,
       });
-      await mockDatabase([mockUserTable]);
+      await mockDatabase([mockRoleTable, mockUserTable]);
     });
     test('should return status 200 when deposit is divisible with 5 and user with forwarded id exists', async () => {
       // @ts-ignore

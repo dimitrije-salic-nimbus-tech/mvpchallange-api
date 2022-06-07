@@ -105,9 +105,30 @@ var deleteUser = function (id) { return __awaiter(void 0, void 0, void 0, functi
         }
     });
 }); };
+var getUserPermissions = function (username) { return __awaiter(void 0, void 0, void 0, function () {
+    var userRepository, user;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0: return [4 /*yield*/, (0, repositories_1.getUserRepository)()];
+            case 1:
+                userRepository = _a.sent();
+                return [4 /*yield*/, userRepository.findOne({
+                        where: { username: username },
+                        relations: ['role', 'role.rolePermissions', 'role.rolePermissions.permission'],
+                    })];
+            case 2:
+                user = _a.sent();
+                if (!user) {
+                    throw new shared_1.ResourceNotFoundException();
+                }
+                return [2 /*return*/, user.role.rolePermissions.map(function (rolePermission) { return rolePermission.permission.permission; })];
+        }
+    });
+}); };
 exports.userService = {
     getUser: getUser,
     getUsers: getUsers,
     updateUser: updateUser,
     deleteUser: deleteUser,
+    getUserPermissions: getUserPermissions,
 };
