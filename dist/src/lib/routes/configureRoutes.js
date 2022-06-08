@@ -6,9 +6,8 @@ var product_1 = require("../../api/product/routes/product");
 var productPrice_1 = require("../../api/product/routes/productPrice");
 var errorMiddleware_1 = require("../middlewares/errorMiddleware");
 var routes_1 = require("../../api/auth/routes");
-var authMiddleware_1 = require("../middlewares/authMiddleware");
 var configureRoutes = function (app) {
-    app.use(authMiddleware_1.auth);
+    // app.use(auth);
     app.use('/api/users', user_1.userRoutes);
     app.use('/api/products', product_1.productRoutes);
     app.use('/api/user-prices', productPrice_1.productPriceRoutes);

@@ -25,6 +25,7 @@ export const environment: ServiceEnvironmentType = {
     region: process.env.REGION || 'Enter region',
     tokenUse: process.env.TOKEN_USE || 'Enter token use',
     tokenExpiration: +(process.env.TOKEN_EXPIRATION || 3600000),
+    responseType: process.env.RESPONSE_TYPE || 'Enter response type',
   },
   redis: {
     port: +(process.env.REDIS_PORT || 6379),

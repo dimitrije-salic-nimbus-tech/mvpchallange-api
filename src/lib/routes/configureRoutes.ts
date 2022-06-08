@@ -8,7 +8,7 @@ import { authRoutes, cognitoRoutes } from '../../api/auth/routes';
 import { auth } from '../middlewares/authMiddleware';
 
 export const configureRoutes = (app: Application): void => {
-  app.use(auth);
+  // app.use(auth);
 
   app.use('/api/users', userRoutes);
   app.use('/api/products', productRoutes);

@@ -16,11 +16,13 @@ const getCognitoUrl = (): LoginResponse => ({
     environment.cognito.clientId,
     environment.cognito.redirectUri,
     environment.cognito.region,
+    environment.cognito.responseType,
   ),
 });
 
 // @ts-ignore
 const cognitoRedirect = (req): string => {
+  console.log(123, req);
   return 'success';
 };
 

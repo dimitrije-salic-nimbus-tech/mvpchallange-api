@@ -16,10 +16,11 @@ export type ServiceEnvironmentType = {
     domainName: string;
     clientId: string;
     redirectUri: string;
-    poolId: string
+    poolId: string;
     region: string;
     tokenUse: string;
     tokenExpiration: number;
+    responseType: string;
   };
   redis: {
     port: number;
