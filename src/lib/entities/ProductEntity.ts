@@ -1,4 +1,4 @@
-import {Column, Entity, ManyToOne, OneToMany} from 'typeorm';
+import { Column, Entity, ManyToOne, OneToMany } from 'typeorm';
 import { Expose } from 'class-transformer';
 
 import { BaseEntity } from './BaseEntity';

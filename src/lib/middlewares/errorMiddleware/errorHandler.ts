@@ -7,7 +7,7 @@ import {
   NOT_ALLOWED,
   NOT_FOUND,
   UNAUTHORIZED,
-  UNKNOWN_ERROR
+  UNKNOWN_ERROR,
 } from '../../utils/constants';
 import { UserAlreadyExistsException } from '../../exceptions/user';
 import {
@@ -16,9 +16,10 @@ import {
   NotEnoughProductAmount,
   NotEnoughDeposit,
 } from '../../exceptions/product';
-import {MethodNotAllowedException, ResourceNotFoundException} from '../../exceptions/shared';
+import { MethodNotAllowedException, ResourceNotFoundException } from '../../exceptions/shared';
 import { ErrorResponse } from '../../shared/dto/error';
 import { UnauthorizedException } from '../../exceptions/shared';
+import { CognitoException } from '../../exceptions/cognito';
 
 // @ts-ignore
 const isBadRequest = (exception): boolean =>
@@ -27,6 +28,7 @@ const isBadRequest = (exception): boolean =>
   exception instanceof NotEnoughProductAmount ||
   exception instanceof NotEnoughDeposit ||
   exception instanceof IncorrectPriceValueException ||
+  exception instanceof CognitoException ||
   exception instanceof CelebrateError;
 
 // @ts-ignore
@@ -78,14 +80,13 @@ export const errorHandler = (err: any, req: Request, res: Response, next: NextFu
   }
 
   if (isNotAllowed(err)) {
-    res.status(403).send(createNotAllowedError(err))
+    res.status(403).send(createNotAllowedError(err));
     return;
   }
 
   if (isNotFount(err)) {
     res.status(404).send(createNotFoundError(err));
     return;
-
   }
 
   console.log('Unknown error', err); // TODO: add logger

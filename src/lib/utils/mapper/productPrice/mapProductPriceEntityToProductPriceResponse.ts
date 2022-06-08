@@ -1,5 +1,5 @@
 import { ProductPriceEntity } from '../../../entities/ProductPriceEntity';
-import { ProductPriceResponse } from '../../../../api/product/dto/response/ProductPriceResponse';
+import { ProductPriceResponse } from '../../../../api/product/dto/response';
 import { mapToClass } from '../ObjectMapper';
 
 export const mapProductPriceEntityToProductPriceResponse = (price: ProductPriceEntity): ProductPriceResponse =>

@@ -1,5 +1,4 @@
 export class UpdateProductRequest {
-    name!: string;
-
-    price!: number;
+  name!: string;
+  price!: number;
 }

@@ -30,7 +30,8 @@ var addDepositSchema = (_e = {},
         id: celebrate_1.Joi.string().uuid().required(),
     }),
     _e[celebrate_1.Segments.BODY] = celebrate_1.Joi.object().keys({
-        deposit: (_f = celebrate_1.Joi.number()).valid.apply(_f, validation_1.VALID_COINS).required(),
+        deposit: (_f = celebrate_1.Joi.number())
+            .valid.apply(_f, validation_1.VALID_COINS).required(),
     }),
     _e);
 exports.userSchemas = {

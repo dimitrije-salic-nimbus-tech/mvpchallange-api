@@ -3,4 +3,4 @@ import { plainToClass } from 'class-transformer';
 import { ClassType } from 'class-transformer/ClassTransformer';
 
 export const mapToClass = <T>(payload: object, toClass: ClassType<T>): T =>
-    plainToClass(toClass, payload, { strategy: 'excludeAll' });
+  plainToClass(toClass, payload, { strategy: 'excludeAll' });

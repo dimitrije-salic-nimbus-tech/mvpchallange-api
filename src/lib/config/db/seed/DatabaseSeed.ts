@@ -1,10 +1,10 @@
-import {RoleEntity} from '../../../entities/RoleEntity';
-import {RoleEnum} from '../../../shared/enums';
-import {PermissionEntity} from '../../../entities/PermissionEntity';
-import {RolePermissionEntity} from '../../../entities/RolePermissionEntity';
-import {UserEntity} from '../../../entities/UserEntity';
-import {ProductEntity} from '../../../entities/ProductEntity';
-import {ProductPriceEntity} from '../../../entities/ProductPriceEntity';
+import { RoleEntity } from '../../../entities/RoleEntity';
+import { RoleEnum } from '../../../shared/enums';
+import { PermissionEntity } from '../../../entities/PermissionEntity';
+import { RolePermissionEntity } from '../../../entities/RolePermissionEntity';
+import { UserEntity } from '../../../entities/UserEntity';
+import { ProductEntity } from '../../../entities/ProductEntity';
+import { ProductPriceEntity } from '../../../entities/ProductPriceEntity';
 
 export const getRolesSeed: Partial<RoleEntity>[] = [
   {
@@ -32,8 +32,8 @@ export const getPermissionsSeed: Partial<PermissionEntity>[] = [
     permission: 'user:delete',
   },
   {
-    permission: 'deposit:write'
-  }
+    permission: 'deposit:write',
+  },
 ];
 
 export const getUsersSeed = (roles: RoleEntity[]): Partial<UserEntity>[] => [

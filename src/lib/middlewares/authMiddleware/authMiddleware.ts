@@ -1,9 +1,8 @@
 import { NextFunction, Request, Response } from 'express';
-import CognitoExpress from 'cognito-express';
 
-import { environment } from '../../config/env';
 import { UnauthorizedException } from '../../exceptions/shared';
 import { unauthorizedRoutes } from '../../utils/auth';
+import { cognitoExpress } from '../../config/cognito';
 
 export const auth = async (req: Request, res: Response, next: NextFunction) => {
   if (Array.from(unauthorizedRoutes).some(([key, value]) => key === req.url && value === req.method)) {
@@ -11,12 +10,6 @@ export const auth = async (req: Request, res: Response, next: NextFunction) => {
     return;
   }
 
-  const cognitoExpress = new CognitoExpress({
-    region: environment.cognito.region,
-    cognitoUserPoolId: environment.cognito.poolId,
-    tokenUse: environment.cognito.tokenUse,
-    tokenExpiration: environment.cognito.tokenExpiration,
-  });
   const accessTokenFromClient = req.headers.accesstoken;
 
   if (!accessTokenFromClient) {
@@ -29,6 +22,4 @@ export const auth = async (req: Request, res: Response, next: NextFunction) => {
   } catch (e) {
     next(new UnauthorizedException());
   }
-
-
 };

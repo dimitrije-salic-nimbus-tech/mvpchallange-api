@@ -32,7 +32,9 @@ const addDepositSchema = {
     id: Joi.string().uuid().required(),
   }),
   [Segments.BODY]: Joi.object().keys({
-    deposit: Joi.number().valid(...VALID_COINS).required(),
+    deposit: Joi.number()
+      .valid(...VALID_COINS)
+      .required(),
   }),
 };
 

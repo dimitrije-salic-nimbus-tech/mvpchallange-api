@@ -1,3 +1,3 @@
-import { composeCognitoUrl } from './composeCognitoUrl';
+import { composeCognitoUrl, composeCognitoOauthUrl } from './composeCognitoUrl';
 
-export { composeCognitoUrl };
+export { composeCognitoUrl, composeCognitoOauthUrl };

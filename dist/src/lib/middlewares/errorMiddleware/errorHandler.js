@@ -7,6 +7,7 @@ var user_1 = require("../../exceptions/user");
 var product_1 = require("../../exceptions/product");
 var shared_1 = require("../../exceptions/shared");
 var shared_2 = require("../../exceptions/shared");
+var cognito_1 = require("../../exceptions/cognito");
 // @ts-ignore
 var isBadRequest = function (exception) {
     return exception instanceof user_1.UserAlreadyExistsException ||
@@ -14,6 +15,7 @@ var isBadRequest = function (exception) {
         exception instanceof product_1.NotEnoughProductAmount ||
         exception instanceof product_1.NotEnoughDeposit ||
         exception instanceof product_1.IncorrectPriceValueException ||
+        exception instanceof cognito_1.CognitoException ||
         exception instanceof celebrate_1.CelebrateError;
 };
 // @ts-ignore
