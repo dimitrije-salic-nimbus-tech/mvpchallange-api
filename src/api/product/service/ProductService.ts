@@ -98,7 +98,7 @@ const updateProduct = async (id: string, request: Partial<UpdateProductRequest>)
   }
 
   if (request.price) {
-    if (request.price < 0 || request.price === getCurrentPrice(product.prices)) {
+    if (request.price < 0 || request.price === getCurrentPrice(product.prices) || request.price % 5 !== 0) {
       throw new IncorrectPriceValueException(); // TODO: use decorator
     }
     await productPriceService.createProductPrice(request.price, product);

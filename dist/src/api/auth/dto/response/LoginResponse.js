@@ -11,13 +11,19 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.LoginResponse = void 0;
 var class_transformer_1 = require("class-transformer");
+var response_1 = require("../../../user/dto/response");
 var LoginResponse = /** @class */ (function () {
     function LoginResponse() {
     }
     __decorate([
         (0, class_transformer_1.Expose)(),
         __metadata("design:type", String)
-    ], LoginResponse.prototype, "cognitoLoginUri", void 0);
+    ], LoginResponse.prototype, "accesstoken", void 0);
+    __decorate([
+        (0, class_transformer_1.Expose)(),
+        (0, class_transformer_1.Type)(function () { return response_1.UserResponse; }),
+        __metadata("design:type", response_1.UserResponse)
+    ], LoginResponse.prototype, "user", void 0);
     return LoginResponse;
 }());
 exports.LoginResponse = LoginResponse;

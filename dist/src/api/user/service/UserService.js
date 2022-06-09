@@ -59,6 +59,23 @@ var getUser = function (id) { return __awaiter(void 0, void 0, void 0, function 
         }
     });
 }); };
+var getUserByUsername = function (username) { return __awaiter(void 0, void 0, void 0, function () {
+    var userRepository, user;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0: return [4 /*yield*/, (0, repositories_1.getUserRepository)()];
+            case 1:
+                userRepository = _a.sent();
+                return [4 /*yield*/, userRepository.findOne({ where: { username: username } })];
+            case 2:
+                user = _a.sent();
+                if (!user) {
+                    throw new shared_1.ResourceNotFoundException();
+                }
+                return [2 /*return*/, (0, user_2.mapUserEntityToUserResponse)(user)];
+        }
+    });
+}); };
 var getUsers = function (query) { return __awaiter(void 0, void 0, void 0, function () {
     var offset, limit, page, userRepository, _a, items, count;
     return __generator(this, function (_b) {
@@ -131,6 +148,7 @@ var getUserPermissions = function (username) { return __awaiter(void 0, void 0, 
 }); };
 exports.userService = {
     getUser: getUser,
+    getUserByUsername: getUserByUsername,
     getUsers: getUsers,
     updateUser: updateUser,
     deleteUser: deleteUser,

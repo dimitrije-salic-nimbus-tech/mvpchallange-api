@@ -20,7 +20,7 @@ export const permit = (permission: PermissionActionType) => async (req: Request,
   const { params } = req;
   if (params.id && (permission === 'product:write' || permission === 'product:delete')) {
     const product: ProductResponse = await productService.getProduct(params.id);
-    if (product.seller.id !== params.id) {
+    if (product.seller.id !== userPermissionsResponse.id) {
       next(new MethodNotAllowedException());
     }
   }
