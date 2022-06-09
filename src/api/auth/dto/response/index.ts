@@ -1,3 +1,4 @@
+import { CognitoResponse } from './CognitoResponse';
 import { LoginResponse } from './LoginResponse';
 
-export { LoginResponse };
+export { CognitoResponse, LoginResponse };

@@ -5,7 +5,7 @@ import { unauthorizedRoutes } from '../../utils/auth';
 import { cognitoExpress } from '../../config/cognito';
 
 export const auth = async (req: Request, res: Response, next: NextFunction) => {
-  if (Array.from(unauthorizedRoutes).some(([key, value]) => key === req.url && value === req.method)) {
+  if (Array.from(unauthorizedRoutes).some(([key, value]) => key === req.url.split('?')[0] && value === req.method)) {
     next();
     return;
   }

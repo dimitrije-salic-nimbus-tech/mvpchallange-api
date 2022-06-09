@@ -11,6 +11,7 @@ import { PermissionActionType } from '../../../lib/shared/types';
 
 interface IUserService {
   getUser: (id: string) => Promise<UserResponse>; // TODO: move get methods to another service (UserQueryService)
+  getUserByUsername: (username: string) => Promise<UserResponse>;
   getUsers: (query: PageableRequest) => Promise<PageableItems<UserResponse>>;
   updateUser: (id: string, request: Partial<UpdateUserRequest>) => Promise<void>;
   deleteUser: (id: string) => Promise<void>;
@@ -20,6 +21,17 @@ interface IUserService {
 const getUser = async (id: string): Promise<UserResponse> => {
   const userRepository = await getUserRepository();
   const user = await userRepository.findOne({ id });
+
+  if (!user) {
+    throw new ResourceNotFoundException();
+  }
+
+  return mapUserEntityToUserResponse(user);
+};
+
+const getUserByUsername = async (username: string): Promise<UserResponse> => {
+  const userRepository = await getUserRepository();
+  const user = await userRepository.findOne({ where: { username } });
 
   if (!user) {
     throw new ResourceNotFoundException();
@@ -79,6 +91,7 @@ const getUserPermissions = async (username: string): Promise<GetUserPermissionsR
 
 export const userService: IUserService = {
   getUser,
+  getUserByUsername,
   getUsers,
   updateUser,
   deleteUser,

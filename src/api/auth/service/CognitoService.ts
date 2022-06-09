@@ -4,7 +4,7 @@ import { Request } from 'express';
 
 import { environment } from '../../../lib/config/env';
 import { composeCognitoOauthUrl, composeCognitoUrl } from '../../../lib/utils/cognito';
-import { LoginResponse } from '../dto/response';
+import { CognitoResponse, LoginResponse } from '../dto/response';
 import { cacheService } from './CacheService';
 import { CacheKeyEnum } from '../../../lib/shared/enums';
 import { CognitoOauthRequest, CognitoOauthResponse } from '../../../lib/shared/dto/cognito';
@@ -12,13 +12,15 @@ import { CognitoException } from '../../../lib/exceptions/cognito';
 import { UnauthorizedException } from '../../../lib/exceptions/shared';
 import { cognitoExpress } from '../../../lib/config/cognito';
 import { UserAlreadyLoggedInException } from '../../../lib/exceptions/auth';
+import { UserResponse } from '../../user/dto/response';
+import { userService } from '../../user/service';
 
 interface IAuthService {
-  getCognitoUrl: () => LoginResponse;
-  cognitoRedirect: (req: Request) => Promise<void>;
+  getCognitoUrl: () => CognitoResponse;
+  cognitoRedirect: (req: Request) => Promise<LoginResponse>;
 }
 
-const getCognitoUrl = (): LoginResponse => ({
+const getCognitoUrl = (): CognitoResponse => ({
   cognitoLoginUri: composeCognitoUrl(
     environment.cognito.domainName,
     environment.cognito.clientId,
@@ -28,7 +30,7 @@ const getCognitoUrl = (): LoginResponse => ({
   ),
 });
 
-const cognitoRedirect = async (req: Request): Promise<void> => {
+const cognitoRedirect = async (req: Request): Promise<LoginResponse> => {
   const { code } = req.query;
 
   if (!code) {
@@ -61,7 +63,11 @@ const cognitoRedirect = async (req: Request): Promise<void> => {
   if (exists) {
     throw new UserAlreadyLoggedInException();
   }
-  return storeCognitoToken(oauthResponse.access_token, username).then(() => Promise.resolve());
+  const user: UserResponse = await userService.getUserByUsername(username);
+  return storeCognitoToken(oauthResponse.access_token, username).then(() => ({
+    accesstoken: oauthResponse.access_token,
+    user,
+  }));
 };
 
 const storeCognitoToken = (token: string, username: string): Promise<string> =>

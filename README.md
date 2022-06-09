@@ -53,3 +53,18 @@ $ docker-compose -f docker-compose.dev.yml up
 ```
 
 - For production, you have to use docker-compose.prod.yml file instead of docker-compose.dev.yml with the exact same steps
+
+### How to run tests
+
+- Up test database
+
+```
+$ cd .docker
+$ docker-compose -f docker-compose.dev.yml build
+$ docker-compose -f docker-compose.dev.yml up mvpmatch-db-test
+```
+
+- Run tests
+```
+$ yarn test:integration
+```
