@@ -1,7 +1,6 @@
 import request from 'supertest';
 
 import { getRoleRepository, getUserRepository } from '../../../src/lib/repositories';
-import { mockDatabase } from '../../MockDatabase';
 import { RoleEnum } from '../../../src/lib/shared/enums';
 
 const usersUrl: string = '/api/users';
@@ -12,11 +11,11 @@ describe(`POST ${usersUrl}`, () => {
     const userRepository = await getUserRepository();
     const roleRepository = await getRoleRepository();
     const roleId: string = 'c7d8f612-b7c9-46bf-9c9b-8fd2cc978bc6';
-    const mockRoleTable = roleRepository.save({
+    await roleRepository.save({
       id: roleId,
       role: RoleEnum.BUYER,
     });
-    const mockUserTable = userRepository.save({
+    await userRepository.save({
       id: 'bdff61aa-9be4-4a79-8ebc-7f4a72b49346',
       createdAt: '2022-05-26 07:59:56.253145',
       updatedAt: '2022-05-26 07:59:56.253145',
@@ -24,7 +23,6 @@ describe(`POST ${usersUrl}`, () => {
       deposit: 100,
       roleId,
     });
-    await mockDatabase([mockRoleTable, mockUserTable]);
   });
   test('should return status 200', async () => {
     // @ts-ignore

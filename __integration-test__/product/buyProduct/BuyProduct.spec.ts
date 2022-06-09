@@ -6,7 +6,6 @@ import {
   getRoleRepository,
   getUserRepository,
 } from '../../../src/lib/repositories';
-import { mockDatabase } from '../../MockDatabase';
 import { RoleEnum } from '../../../src/lib/shared/enums';
 import { BuyProductRequest } from '../../../src/api/product/dto/request';
 
@@ -22,7 +21,7 @@ describe(`POST ${buyProductUrl(':id')}`, () => {
     const roleRepository = await getRoleRepository();
     const buyerRoleId: string = 'c7d8f612-b7c9-46bf-9c9b-8fd2cc978bc6';
     const sellerRoleId: string = '966e02ad-b32c-4306-8070-ca9cbbfe65af';
-    const mockRoleTable = roleRepository.save([
+    await roleRepository.save([
       {
         id: buyerRoleId,
         role: RoleEnum.BUYER,
@@ -32,7 +31,7 @@ describe(`POST ${buyProductUrl(':id')}`, () => {
         role: RoleEnum.SELLER,
       },
     ]);
-    const mockUserTable = userRepository.save([
+    await userRepository.save([
       {
         id: buyerId,
         createdAt: '2022-05-26 07:59:56.253145',
@@ -51,7 +50,7 @@ describe(`POST ${buyProductUrl(':id')}`, () => {
       },
     ]);
     const productRepository = await getProductRepository();
-    const mockProductTable = productRepository.save({
+    await productRepository.save({
       id: productId,
       createdAt: '2022-05-26 07:59:56.253145',
       updatedAt: '2022-05-26 07:59:56.253145',
@@ -60,15 +59,13 @@ describe(`POST ${buyProductUrl(':id')}`, () => {
       sellerId,
     });
     const productPriceRepository = await getProductPriceRepository();
-    const mockProductPriceTable = productPriceRepository.save({
+    await productPriceRepository.save({
       id: '99e9d191-8bf5-4f55-9661-801daed0d11c',
       createdAt: '2022-05-26 07:59:56.253145',
       updatedAt: '2022-05-26 07:59:56.253145',
       price: 10,
       productId,
     });
-
-    await mockDatabase([mockRoleTable, mockUserTable, mockProductTable, mockProductPriceTable]);
   });
   test('should return status 200', async () => {
     // @ts-ignore
