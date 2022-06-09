@@ -79,7 +79,7 @@ export const getProductsSeed = (sellers: UserEntity[]): Partial<ProductEntity>[]
 
 export const getProductPriceSeed = (products: ProductEntity[]): Partial<ProductPriceEntity>[] => {
   return products.map((product: ProductEntity, index: number) => ({
-    price: index * 10,
+    price: (index + 1) * 10,
     productId: product.id,
   }));
 };
