@@ -106,7 +106,7 @@ var deleteUser = function (id) { return __awaiter(void 0, void 0, void 0, functi
     });
 }); };
 var getUserPermissions = function (username) { return __awaiter(void 0, void 0, void 0, function () {
-    var userRepository, user;
+    var userRepository, user, permissions;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0: return [4 /*yield*/, (0, repositories_1.getUserRepository)()];
@@ -121,7 +121,11 @@ var getUserPermissions = function (username) { return __awaiter(void 0, void 0, 
                 if (!user) {
                     throw new shared_1.ResourceNotFoundException();
                 }
-                return [2 /*return*/, user.role.rolePermissions.map(function (rolePermission) { return rolePermission.permission.permission; })];
+                permissions = user.role.rolePermissions.map(function (rolePermission) { return rolePermission.permission.permission; });
+                return [2 /*return*/, {
+                        id: user.id,
+                        permissions: permissions,
+                    }];
         }
     });
 }); };

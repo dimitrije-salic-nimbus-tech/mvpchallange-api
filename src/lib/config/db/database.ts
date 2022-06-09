@@ -10,7 +10,7 @@ export const configureDatabase = async (): Promise<Connection> => {
     return connection;
   }
 
-  return createConnection({
+  connection = await createConnection({
     database: environment.database.name,
     entities: ENTITIES,
     host: environment.database.host,
@@ -23,6 +23,8 @@ export const configureDatabase = async (): Promise<Connection> => {
     type: 'postgres',
     username: environment.database.user,
   });
+
+  return connection;
 };
 
 export const closeConnection = async (): Promise<void> => {

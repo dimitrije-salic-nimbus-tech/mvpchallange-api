@@ -47,7 +47,7 @@ var product_2 = require("../../../lib/utils/mapper/product");
 var shared_1 = require("../../../lib/exceptions/shared");
 var pagination_1 = require("../../../lib/utils/mapper/pagination");
 var product_3 = require("../../../lib/exceptions/product");
-var createProduct = function (id, request) { return __awaiter(void 0, void 0, void 0, function () {
+var createProduct = function (userId, request) { return __awaiter(void 0, void 0, void 0, function () {
     var name, price, amountAvailable, productRepository, productExists, seller, productForCreate;
     return __generator(this, function (_a) {
         switch (_a.label) {
@@ -65,7 +65,7 @@ var createProduct = function (id, request) { return __awaiter(void 0, void 0, vo
                 if (productExists) {
                     throw new product_1.ProductAlreadyExistsException();
                 }
-                return [4 /*yield*/, service_1.userService.getUser(id)];
+                return [4 /*yield*/, service_1.userService.getUser(userId)];
             case 3:
                 seller = _a.sent();
                 productForCreate = (0, mapper_1.mapToClass)({ name: name, amountAvailable: amountAvailable, sellerId: seller.id }, ProductEntity_1.ProductEntity);

@@ -20,6 +20,7 @@ import { MethodNotAllowedException, ResourceNotFoundException } from '../../exce
 import { ErrorResponse } from '../../shared/dto/error';
 import { UnauthorizedException } from '../../exceptions/shared';
 import { CognitoException } from '../../exceptions/cognito';
+import { UserAlreadyLoggedInException } from '../../exceptions/auth';
 
 // @ts-ignore
 const isBadRequest = (exception): boolean =>
@@ -29,6 +30,7 @@ const isBadRequest = (exception): boolean =>
   exception instanceof NotEnoughDeposit ||
   exception instanceof IncorrectPriceValueException ||
   exception instanceof CognitoException ||
+  exception instanceof UserAlreadyLoggedInException ||
   exception instanceof CelebrateError;
 
 // @ts-ignore

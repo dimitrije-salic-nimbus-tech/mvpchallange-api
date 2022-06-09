@@ -14,6 +14,7 @@ import {
   NOT_ALLOWED,
   METHOD_NOT_ALLOWED,
   COGNITO_EXCEPTION,
+  USER_ALREADY_LOGGED_IN,
 } from './ErrorMessages';
 
 export {
@@ -32,4 +33,5 @@ export {
   NOT_ALLOWED,
   METHOD_NOT_ALLOWED,
   COGNITO_EXCEPTION,
+  USER_ALREADY_LOGGED_IN,
 };

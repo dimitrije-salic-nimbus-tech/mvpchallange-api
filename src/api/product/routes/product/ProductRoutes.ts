@@ -14,13 +14,13 @@ import { permit } from '../../../../lib/middlewares/permissionMiddleware';
 const router = Router();
 
 router.post(
-  '/:id/user',
+  '/:userId/user',
   [celebrate(productSchemas.createProductSchema), permit('product:write')],
-  (req: Request<{ id: string }, any, CreateProductRequest>, res: Response, next: NextFunction) => {
+  (req: Request<{ userId: string }, any, CreateProductRequest>, res: Response, next: NextFunction) => {
     const { body, params } = req;
 
     productService
-      .createProduct(params.id, body)
+      .createProduct(params.userId, body)
       .then(() => res.status(201).send())
       .catch(next);
   },

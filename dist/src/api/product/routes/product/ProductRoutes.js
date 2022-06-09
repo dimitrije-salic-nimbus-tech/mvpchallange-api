@@ -8,10 +8,10 @@ var pagination_1 = require("../../../../lib/utils/validation/pagination");
 var pagination_2 = require("../../../../lib/utils/mapper/pagination");
 var permissionMiddleware_1 = require("../../../../lib/middlewares/permissionMiddleware");
 var router = (0, express_1.Router)();
-router.post('/:id/user', [(0, celebrate_1.celebrate)(ProductSchemas_1.productSchemas.createProductSchema), (0, permissionMiddleware_1.permit)('product:write')], function (req, res, next) {
+router.post('/:userId/user', [(0, celebrate_1.celebrate)(ProductSchemas_1.productSchemas.createProductSchema), (0, permissionMiddleware_1.permit)('product:write')], function (req, res, next) {
     var body = req.body, params = req.params;
     service_1.productService
-        .createProduct(params.id, body)
+        .createProduct(params.userId, body)
         .then(function () { return res.status(201).send(); })
         .catch(next);
 });

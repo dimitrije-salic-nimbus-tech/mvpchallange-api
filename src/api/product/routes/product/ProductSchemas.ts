@@ -7,7 +7,7 @@ const createProductSchema = {
     amountAvailable: Joi.number().required(),
   }),
   [Segments.PARAMS]: Joi.object().keys({
-    id: Joi.string().uuid().required(),
+    userId: Joi.string().uuid().required(),
   }),
 };
 

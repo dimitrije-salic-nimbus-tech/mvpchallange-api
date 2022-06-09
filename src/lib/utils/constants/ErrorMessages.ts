@@ -13,3 +13,4 @@ export const NOT_ENOUGH_PRODUCT_AMOUNT = 'Not enough user amount';
 export const AUTHENTICATION_FAILED = 'Access token missing from header';
 export const METHOD_NOT_ALLOWED = 'You do not have permission';
 export const COGNITO_EXCEPTION = 'Incorrect authorization code';
+export const USER_ALREADY_LOGGED_IN = 'You are already logged in';

@@ -10,7 +10,7 @@ var createProductSchema = (_a = {},
         amountAvailable: celebrate_1.Joi.number().required(),
     }),
     _a[celebrate_1.Segments.PARAMS] = celebrate_1.Joi.object().keys({
-        id: celebrate_1.Joi.string().uuid().required(),
+        userId: celebrate_1.Joi.string().uuid().required(),
     }),
     _a);
 var getProductSchema = (_b = {},

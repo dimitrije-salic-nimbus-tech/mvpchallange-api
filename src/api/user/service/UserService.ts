@@ -1,6 +1,6 @@
 import { getUserRepository } from '../../../lib/repositories';
 import { UserAlreadyExistsException } from '../../../lib/exceptions/user';
-import { UserResponse } from '../dto/response';
+import { GetUserPermissionsResponse, UserResponse } from '../dto/response';
 import { ResourceNotFoundException } from '../../../lib/exceptions/shared';
 import { mapUserEntitiesToUserResponses, mapUserEntityToUserResponse } from '../../../lib/utils/mapper/user';
 import { UpdateUserRequest } from '../dto/request';
@@ -14,7 +14,7 @@ interface IUserService {
   getUsers: (query: PageableRequest) => Promise<PageableItems<UserResponse>>;
   updateUser: (id: string, request: Partial<UpdateUserRequest>) => Promise<void>;
   deleteUser: (id: string) => Promise<void>;
-  getUserPermissions: (username: string) => Promise<PermissionActionType[]>;
+  getUserPermissions: (username: string) => Promise<GetUserPermissionsResponse>;
 }
 
 const getUser = async (id: string): Promise<UserResponse> => {
@@ -56,7 +56,7 @@ const deleteUser = async (id: string): Promise<void> => {
   return userRepository.delete(id).then(() => Promise.resolve());
 };
 
-const getUserPermissions = async (username: string): Promise<PermissionActionType[]> => {
+const getUserPermissions = async (username: string): Promise<GetUserPermissionsResponse> => {
   const userRepository = await getUserRepository();
   const user = await userRepository.findOne({
     where: { username },
@@ -67,7 +67,14 @@ const getUserPermissions = async (username: string): Promise<PermissionActionTyp
     throw new ResourceNotFoundException();
   }
 
-  return user.role.rolePermissions.map((rolePermission: RolePermissionEntity) => rolePermission.permission.permission);
+  const permissions: PermissionActionType[] = user.role.rolePermissions.map(
+    (rolePermission: RolePermissionEntity) => rolePermission.permission.permission,
+  );
+
+  return {
+    id: user.id,
+    permissions,
+  };
 };
 
 export const userService: IUserService = {

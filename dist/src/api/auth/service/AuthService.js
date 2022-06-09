@@ -41,6 +41,9 @@ var repositories_1 = require("../../../lib/repositories");
 var user_1 = require("../../../lib/exceptions/user");
 var UserEntity_1 = require("../../../lib/entities/UserEntity");
 var mapper_1 = require("../../../lib/utils/mapper");
+var CacheService_1 = require("./CacheService");
+var enums_1 = require("../../../lib/shared/enums");
+var service_1 = require("../../user/service");
 var userRegistration = function (request) { return __awaiter(void 0, void 0, void 0, function () {
     var username, role, userRepository, userExists, userForCreate;
     return __generator(this, function (_a) {
@@ -61,6 +64,18 @@ var userRegistration = function (request) { return __awaiter(void 0, void 0, voi
         }
     });
 }); };
+var logout = function (id) { return __awaiter(void 0, void 0, void 0, function () {
+    var user;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0: return [4 /*yield*/, service_1.userService.getUser(id)];
+            case 1:
+                user = _a.sent();
+                return [2 /*return*/, CacheService_1.cacheService.remove("".concat(enums_1.CacheKeyEnum.USER_SESSION, "_").concat(user.username)).then(function () { return Promise.resolve(); })];
+        }
+    });
+}); };
 exports.authService = {
     userRegistration: userRegistration,
+    logout: logout,
 };

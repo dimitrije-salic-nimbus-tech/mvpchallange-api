@@ -20,4 +20,17 @@ router.post(
   },
 );
 
+router.post(
+  '/logout/:id',
+  [celebrate(userSchemas.getUserSchema)],
+  (req: Request, res: Response, next: NextFunction) => {
+    const { id } = req.params;
+
+    authService
+      .logout(id)
+      .then(() => res.send())
+      .catch(next);
+  },
+);
+
 export default router;

@@ -11,11 +11,11 @@ import { CognitoOauthRequest, CognitoOauthResponse } from '../../../lib/shared/d
 import { CognitoException } from '../../../lib/exceptions/cognito';
 import { UnauthorizedException } from '../../../lib/exceptions/shared';
 import { cognitoExpress } from '../../../lib/config/cognito';
+import { UserAlreadyLoggedInException } from '../../../lib/exceptions/auth';
 
 interface IAuthService {
   getCognitoUrl: () => LoginResponse;
   cognitoRedirect: (req: Request) => Promise<void>;
-  storeCognitoToken: (token: string, username: string) => Promise<string>;
 }
 
 const getCognitoUrl = (): LoginResponse => ({
@@ -50,17 +50,21 @@ const cognitoRedirect = async (req: Request): Promise<void> => {
     },
   }).then((res) => res.data);
 
+  let cognitoValidatedResponse;
   try {
-    const cognitoValidatedResponse = await cognitoExpress.validate(oauthResponse.access_token);
-    return storeCognitoToken(oauthResponse.access_token, cognitoValidatedResponse.username).then(() =>
-      Promise.resolve(),
-    );
+    cognitoValidatedResponse = await cognitoExpress.validate(oauthResponse.access_token);
   } catch (err) {
     throw new UnauthorizedException();
   }
+  const { username } = cognitoValidatedResponse;
+  const exists = await cacheService.get(`${CacheKeyEnum.USER_SESSION}_${username}`);
+  if (exists) {
+    throw new UserAlreadyLoggedInException();
+  }
+  return storeCognitoToken(oauthResponse.access_token, username).then(() => Promise.resolve());
 };
 
 const storeCognitoToken = (token: string, username: string): Promise<string> =>
   cacheService.store<string>(`${CacheKeyEnum.USER_SESSION}_${username}`, token);
 
-export const cognitoService: IAuthService = { getCognitoUrl, cognitoRedirect, storeCognitoToken };
+export const cognitoService: IAuthService = { getCognitoUrl, cognitoRedirect };

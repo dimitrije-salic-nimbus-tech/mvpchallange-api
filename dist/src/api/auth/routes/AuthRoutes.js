@@ -12,4 +12,11 @@ router.post('/registration', [(0, celebrate_1.celebrate)(user_1.userSchemas.crea
         .then(function () { return res.status(201).send(); })
         .catch(next);
 });
+router.post('/logout/:id', [(0, celebrate_1.celebrate)(user_1.userSchemas.getUserSchema)], function (req, res, next) {
+    var id = req.params.id;
+    service_1.authService
+        .logout(id)
+        .then(function () { return res.send(); })
+        .catch(next);
+});
 exports.default = router;

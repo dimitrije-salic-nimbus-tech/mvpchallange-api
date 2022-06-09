@@ -18,14 +18,14 @@ import { createPageableResponse } from '../../../lib/utils/mapper/pagination';
 import { IncorrectPriceValueException } from '../../../lib/exceptions/product';
 
 interface IProductService {
-  createProduct: (id: string, request: CreateProductRequest) => Promise<void>;
+  createProduct: (userId: string, request: CreateProductRequest) => Promise<void>;
   getProduct: (id: string) => Promise<ProductResponse>; // TODO: move get methods to query service (ProductQueryService)
   getProducts: (query: PageableRequest) => Promise<PageableItems<ProductResponse>>;
   updateProduct: (id: string, request: UpdateProductRequest) => Promise<void>;
   deleteProduct: (id: string) => Promise<void>;
 }
 
-const createProduct = async (id: string, request: CreateProductRequest): Promise<void> => {
+const createProduct = async (userId: string, request: CreateProductRequest): Promise<void> => {
   const { name, price, amountAvailable } = request;
 
   if (price % 5 !== 0) {
@@ -40,7 +40,7 @@ const createProduct = async (id: string, request: CreateProductRequest): Promise
     throw new ProductAlreadyExistsException();
   }
 
-  const seller: UserResponse = await userService.getUser(id);
+  const seller: UserResponse = await userService.getUser(userId);
 
   const productForCreate: Partial<ProductEntity> = mapToClass<ProductEntity>(
     { name, amountAvailable, sellerId: seller.id },

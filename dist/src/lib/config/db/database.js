@@ -43,22 +43,28 @@ var env_1 = require("../env");
 var connection = null;
 var configureDatabase = function () { return __awaiter(void 0, void 0, void 0, function () {
     return __generator(this, function (_a) {
-        if (connection) {
-            return [2 /*return*/, connection];
+        switch (_a.label) {
+            case 0:
+                if (connection) {
+                    return [2 /*return*/, connection];
+                }
+                return [4 /*yield*/, (0, typeorm_1.createConnection)({
+                        database: env_1.environment.database.name,
+                        entities: entities_1.ENTITIES,
+                        host: env_1.environment.database.host,
+                        logging: false,
+                        migrationsRun: env_1.environment.env === 'test',
+                        name: 'mvpmatch',
+                        password: env_1.environment.database.password,
+                        port: env_1.environment.database.port,
+                        synchronize: env_1.environment.env === 'test',
+                        type: 'postgres',
+                        username: env_1.environment.database.user,
+                    })];
+            case 1:
+                connection = _a.sent();
+                return [2 /*return*/, connection];
         }
-        return [2 /*return*/, (0, typeorm_1.createConnection)({
-                database: env_1.environment.database.name,
-                entities: entities_1.ENTITIES,
-                host: env_1.environment.database.host,
-                logging: false,
-                migrationsRun: env_1.environment.env === 'test',
-                name: 'mvpmatch',
-                password: env_1.environment.database.password,
-                port: env_1.environment.database.port,
-                synchronize: env_1.environment.env === 'test',
-                type: 'postgres',
-                username: env_1.environment.database.user,
-            })];
     });
 }); };
 exports.configureDatabase = configureDatabase;
