@@ -17,12 +17,26 @@ export const permit = (permission: PermissionActionType) => async (req: Request,
     next(new MethodNotAllowedException());
   }
 
-  const { params } = req;
-  if (params.id && (permission === 'product:write' || permission === 'product:delete')) {
-    const product: ProductResponse = await productService.getProduct(params.id);
-    if (product.seller.id !== userPermissionsResponse.id) {
-      next(new MethodNotAllowedException());
-    }
+  switch (permission) {
+    case 'product:write':
+      if (req.params.id) {
+        const product: ProductResponse = await productService.getProduct(req.params.id);
+        if (product.seller.id !== userPermissionsResponse.id) {
+          next(new MethodNotAllowedException());
+        }
+      }
+      break;
+    case 'product:delete':
+      const product: ProductResponse = await productService.getProduct(req.params.id);
+      if (product.seller.id !== userPermissionsResponse.id) {
+        next(new MethodNotAllowedException());
+      }
+      break;
+    case 'deposit:write':
+      if (userPermissionsResponse.id !== req.params.id) {
+        next(new MethodNotAllowedException());
+      }
+      break;
   }
   next();
 };

@@ -43,50 +43,52 @@ var repositories_1 = require("../../../lib/repositories");
 var product_1 = require("../../../lib/utils/mapper/product");
 var product_2 = require("../../../lib/exceptions/product");
 var buyProduct = function (id, request) { return __awaiter(void 0, void 0, void 0, function () {
-    var productRepository, user, totalSpent, products;
-    return __generator(this, function (_a) {
-        switch (_a.label) {
+    var productRepository, user, totalSpent, depositLeft, i, _a, productId, amount, product, amountAvailable, price, products;
+    return __generator(this, function (_b) {
+        switch (_b.label) {
             case 0: return [4 /*yield*/, (0, repositories_1.getProductRepository)()];
             case 1:
-                productRepository = _a.sent();
+                productRepository = _b.sent();
                 return [4 /*yield*/, service_1.userService.getUser(id)];
             case 2:
-                user = _a.sent();
+                user = _b.sent();
                 totalSpent = 0;
-                return [4 /*yield*/, Promise.all(
-                    // TODO: implement transactions which would allow to revert database changes if exception is thrown
-                    request.products.map(function (req) { return __awaiter(void 0, void 0, void 0, function () {
-                        var productId, amount, product, amountAvailable, price;
-                        return __generator(this, function (_a) {
-                            switch (_a.label) {
-                                case 0:
-                                    productId = req.productId, amount = req.amount;
-                                    return [4 /*yield*/, productRepository.findOne({ where: { id: productId }, relations: ['prices'] })];
-                                case 1:
-                                    product = _a.sent();
-                                    if (!product) {
-                                        throw new shared_1.ResourceNotFoundException();
-                                    }
-                                    amountAvailable = getAmountAvailable(product.amountAvailable, amount);
-                                    price = getPrice(amount, product.prices, user.deposit);
-                                    totalSpent += price;
-                                    return [4 /*yield*/, Promise.all([
-                                            service_1.userDepositService.changeDeposit(id, {
-                                                deposit: -price,
-                                            }),
-                                            productRepository.update(productId, { amountAvailable: amountAvailable }),
-                                        ])];
-                                case 2:
-                                    _a.sent();
-                                    return [2 /*return*/, productRepository.findOneOrFail({ where: { id: productId }, relations: ['prices'] })];
-                            }
-                        });
-                    }); }))];
+                depositLeft = user.deposit;
+                i = 0;
+                _b.label = 3;
             case 3:
-                products = _a.sent();
+                if (!(i < request.products.length)) return [3 /*break*/, 7];
+                _a = request.products[i], productId = _a.productId, amount = _a.amount;
+                return [4 /*yield*/, productRepository.findOne({ where: { id: productId }, relations: ['prices'] })];
+            case 4:
+                product = _b.sent();
+                if (!product) {
+                    throw new shared_1.ResourceNotFoundException();
+                }
+                amountAvailable = getAmountAvailable(product.amountAvailable, amount);
+                price = getPrice(amount, product.prices, depositLeft);
+                totalSpent += price;
+                depositLeft -= price;
+                return [4 /*yield*/, Promise.all([
+                        service_1.userDepositService.changeDeposit(id, {
+                            deposit: -price,
+                        }),
+                        productRepository.update(productId, { amountAvailable: amountAvailable }),
+                    ])];
+            case 5:
+                _b.sent();
+                _b.label = 6;
+            case 6:
+                i++;
+                return [3 /*break*/, 3];
+            case 7: return [4 /*yield*/, Promise.all(request.products.map(function (req) {
+                    return productRepository.findOneOrFail({ where: { id: req.productId }, relations: ['prices', 'seller'] });
+                }))];
+            case 8:
+                products = _b.sent();
                 return [2 /*return*/, {
                         totalSpent: totalSpent,
-                        depositLeft: user.deposit - totalSpent,
+                        depositLeft: depositLeft,
                         boughtProducts: (0, product_1.mapProductEntitiesToProductResponses)(products),
                     }];
         }

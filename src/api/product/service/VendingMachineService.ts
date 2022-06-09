@@ -15,39 +15,43 @@ interface IVendingMachineService {
 
 const buyProduct = async (id: string, request: BuyProductRequest): Promise<BuyProductResponse> => {
   const productRepository = await getProductRepository();
-
   const user: UserResponse = await userService.getUser(id);
 
   let totalSpent: number = 0;
+  let depositLeft: number = user.deposit;
+
+  // Not able to use Promise.all(stream) because of user's deposit
+  // Transactions should be implemented to revert db changes if eventually exception is thrown due to lack of deposit/amount
+  for (let i = 0; i < request.products.length; i++) {
+    const { productId, amount } = request.products[i];
+    const product = await productRepository.findOne({ where: { id: productId }, relations: ['prices'] });
+    if (!product) {
+      throw new ResourceNotFoundException();
+    }
+
+    const amountAvailable: number = getAmountAvailable(product.amountAvailable, amount);
+
+    const price: number = getPrice(amount, product.prices, depositLeft);
+    totalSpent += price;
+    depositLeft -= price;
+
+    await Promise.all([
+      userDepositService.changeDeposit(id, {
+        deposit: -price,
+      }),
+      productRepository.update(productId, { amountAvailable }),
+    ]);
+  }
 
   const products: ProductEntity[] = await Promise.all(
-    // TODO: implement transactions which would allow to revert database changes if exception is thrown
-    request.products.map(async (req: { productId: string; amount: number }) => {
-      const { productId, amount } = req;
-      const product = await productRepository.findOne({ where: { id: productId }, relations: ['prices'] });
-      if (!product) {
-        throw new ResourceNotFoundException();
-      }
-
-      const amountAvailable: number = getAmountAvailable(product.amountAvailable, amount);
-
-      const price: number = getPrice(amount, product.prices, user.deposit);
-      totalSpent += price;
-
-      await Promise.all([
-        userDepositService.changeDeposit(id, {
-          deposit: -price,
-        }),
-        productRepository.update(productId, { amountAvailable }),
-      ]);
-
-      return productRepository.findOneOrFail({ where: { id: productId }, relations: ['prices'] });
-    }),
+    request.products.map((req) =>
+      productRepository.findOneOrFail({ where: { id: req.productId }, relations: ['prices', 'seller'] }),
+    ),
   );
 
   return {
     totalSpent,
-    depositLeft: user.deposit - totalSpent,
+    depositLeft,
     boughtProducts: mapProductEntitiesToProductResponses(products),
   };
 };

@@ -140,7 +140,7 @@ var updateProduct = function (id, request) { return __awaiter(void 0, void 0, vo
                 _a.label = 5;
             case 5:
                 if (!request.price) return [3 /*break*/, 7];
-                if (request.price < 0 || request.price === (0, product_2.getCurrentPrice)(product.prices)) {
+                if (request.price < 0 || request.price === (0, product_2.getCurrentPrice)(product.prices) || request.price % 5 !== 0) {
                     throw new product_3.IncorrectPriceValueException(); // TODO: use decorator
                 }
                 return [4 /*yield*/, ProductPriceService_1.productPriceService.createProductPrice(request.price, product)];
