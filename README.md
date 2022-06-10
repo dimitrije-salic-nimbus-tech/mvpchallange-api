@@ -35,6 +35,12 @@ $ cp .env.dev.example .env.dev
 $ yarn
 ```
 
+- Run migrations
+
+```
+$ yarn migration:run
+```
+
 - Run application
 
 ```
@@ -51,8 +57,6 @@ $ cd .docker
 $ docker-compose -f docker-compose.dev.yml build
 $ docker-compose -f docker-compose.dev.yml up
 ```
-
-- For production, you have to use docker-compose.prod.yml file instead of docker-compose.dev.yml with the exact same steps
 
 ### How to run tests
 
