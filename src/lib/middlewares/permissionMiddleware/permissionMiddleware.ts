@@ -15,14 +15,17 @@ export const permit = (permission: PermissionActionType) => async (req: Request,
   const { permissions } = userPermissionsResponse;
   if (!permissions.some((perm: PermissionActionType) => perm === permission)) {
     next(new MethodNotAllowedException());
+    return;
   }
 
+  // add generate method to avoid switch case
   switch (permission) {
     case 'product:write':
       if (req.params.id) {
         const product: ProductResponse = await productService.getProduct(req.params.id);
         if (product.seller.id !== userPermissionsResponse.id) {
           next(new MethodNotAllowedException());
+          return;
         }
       }
       break;
@@ -30,11 +33,13 @@ export const permit = (permission: PermissionActionType) => async (req: Request,
       const product: ProductResponse = await productService.getProduct(req.params.id);
       if (product.seller.id !== userPermissionsResponse.id) {
         next(new MethodNotAllowedException());
+        return;
       }
       break;
     case 'deposit:write':
       if (userPermissionsResponse.id !== req.params.id) {
         next(new MethodNotAllowedException());
+        return;
       }
       break;
   }

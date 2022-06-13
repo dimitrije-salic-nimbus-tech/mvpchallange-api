@@ -72,3 +72,6 @@ $ docker-compose -f docker-compose.dev.yml up mvpmatch-db-test
 ```
 $ yarn test:integration
 ```
+
+## NOTE
+- Dockerfile for production prepared 
