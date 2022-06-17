@@ -2,7 +2,7 @@ import { NextFunction, Request, Response, Router } from 'express';
 import { celebrate } from 'celebrate';
 
 import { userService, userDepositService } from '../../service';
-import { UserResponse } from '../../dto/response';
+import {UserFullResponse, UserResponse} from '../../dto/response';
 import { userSchemas } from './UserSchemas';
 import { PageableItems } from '../../../../lib/shared/dto/pagination';
 import { ChangeDepositRequest } from '../../dto/request';
@@ -74,7 +74,7 @@ router.post(
 
     userDepositService
       .changeDeposit(params.id, body)
-      .then((deposit: string) => res.send(deposit))
+      .then((user: UserFullResponse) => res.send(user))
       .catch(next);
   },
 );
@@ -87,7 +87,7 @@ router.post(
 
     userDepositService
       .resetDeposit(id)
-      .then(() => res.send())
+      .then((user: UserFullResponse) => res.send(user))
       .catch(next);
   },
 );

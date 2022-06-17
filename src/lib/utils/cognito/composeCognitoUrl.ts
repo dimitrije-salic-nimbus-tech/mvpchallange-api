@@ -9,3 +9,11 @@ export const composeCognitoUrl = (
 
 export const composeCognitoOauthUrl = (domainName: string, region: string): string =>
   `https://${domainName}.auth.${region}.amazoncognito.com/oauth2/token`;
+
+export const composeCognitoLogoutUr = (
+  domainName: string,
+  clientId: string,
+  redirectUri: string,
+  region: string,
+  responseType: string,
+): string => `https://${domainName}.auth.${region}.amazoncognito.com/logout?response_type=${responseType}&client_id=${clientId}&redirect_uri=${redirectUri}`;

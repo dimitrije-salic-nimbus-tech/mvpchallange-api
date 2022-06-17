@@ -35,8 +35,13 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.authService = void 0;
+var qs_1 = __importDefault(require("qs"));
+var axios_1 = __importDefault(require("axios"));
 var repositories_1 = require("../../../lib/repositories");
 var user_1 = require("../../../lib/exceptions/user");
 var UserEntity_1 = require("../../../lib/entities/UserEntity");
@@ -44,6 +49,12 @@ var mapper_1 = require("../../../lib/utils/mapper");
 var CacheService_1 = require("./CacheService");
 var enums_1 = require("../../../lib/shared/enums");
 var service_1 = require("../../user/service");
+var cognito_1 = require("../../../lib/exceptions/cognito");
+var env_1 = require("../../../lib/config/env");
+var cognito_2 = require("../../../lib/utils/cognito");
+var cognito_3 = require("../../../lib/config/cognito");
+var shared_1 = require("../../../lib/exceptions/shared");
+var auth_1 = require("../../../lib/exceptions/auth");
 var userRegistration = function (request) { return __awaiter(void 0, void 0, void 0, function () {
     var username, role, userRepository, userExists, userForCreate;
     return __generator(this, function (_a) {
@@ -64,6 +75,58 @@ var userRegistration = function (request) { return __awaiter(void 0, void 0, voi
         }
     });
 }); };
+var login = function (code) { return __awaiter(void 0, void 0, void 0, function () {
+    var oauthRequest, oauthResponse, cognitoValidatedResponse, err_1, username, exists, user;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                if (!code) {
+                    throw new cognito_1.CognitoException();
+                }
+                oauthRequest = {
+                    grant_type: 'authorization_code',
+                    code: code.toString(),
+                    client_id: env_1.environment.cognito.clientId,
+                    redirect_uri: env_1.environment.cognito.redirectUri,
+                };
+                return [4 /*yield*/, (0, axios_1.default)({
+                        method: 'post',
+                        url: (0, cognito_2.composeCognitoOauthUrl)(env_1.environment.cognito.domainName, env_1.environment.cognito.region),
+                        data: qs_1.default.stringify(oauthRequest),
+                        headers: {
+                            'content-type': 'application/x-www-form-urlencoded;charset=utf-8',
+                        },
+                    }).then(function (res) { return res.data; })];
+            case 1:
+                oauthResponse = _a.sent();
+                _a.label = 2;
+            case 2:
+                _a.trys.push([2, 4, , 5]);
+                return [4 /*yield*/, cognito_3.cognitoExpress.validate(oauthResponse.access_token)];
+            case 3:
+                cognitoValidatedResponse = _a.sent();
+                return [3 /*break*/, 5];
+            case 4:
+                err_1 = _a.sent();
+                throw new shared_1.UnauthorizedException();
+            case 5:
+                username = cognitoValidatedResponse.username;
+                return [4 /*yield*/, CacheService_1.cacheService.get("".concat(enums_1.CacheKeyEnum.USER_SESSION, "_").concat(username))];
+            case 6:
+                exists = _a.sent();
+                if (exists) {
+                    throw new auth_1.UserAlreadyLoggedInException();
+                }
+                return [4 /*yield*/, service_1.userService.getUserByUsername(username)];
+            case 7:
+                user = _a.sent();
+                return [2 /*return*/, storeCognitoToken(oauthResponse.access_token, username).then(function () { return ({
+                        accesstoken: oauthResponse.access_token,
+                        user: user,
+                    }); })];
+        }
+    });
+}); };
 var logout = function (id) { return __awaiter(void 0, void 0, void 0, function () {
     var user;
     return __generator(this, function (_a) {
@@ -77,5 +140,9 @@ var logout = function (id) { return __awaiter(void 0, void 0, void 0, function (
 }); };
 exports.authService = {
     userRegistration: userRegistration,
+    login: login,
     logout: logout,
+};
+var storeCognitoToken = function (token, username) {
+    return CacheService_1.cacheService.store("".concat(enums_1.CacheKeyEnum.USER_SESSION, "_").concat(username), token);
 };

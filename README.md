@@ -73,5 +73,13 @@ $ docker-compose -f docker-compose.dev.yml up mvpmatch-db-test
 $ yarn test:integration
 ```
 
+# Users:
+```
+buyer username: mvpmatchuser1
+buyer password: Mvpmatchuser1!
+seller username: mvpmatchuser2
+seller password: Mvpmatchuser2!
+```
+
 ## NOTE
 - Dockerfile for production prepared 

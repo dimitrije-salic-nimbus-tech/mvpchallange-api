@@ -1,9 +1,11 @@
 import { NextFunction, Request, Response, Router } from 'express';
 import { celebrate } from 'celebrate';
 
+import { authSchemas } from './AuthSchemas';
 import { userSchemas } from '../../user/routes/user';
 import { CreateUserRequest } from '../../user/dto/request';
 import { authService } from '../service';
+import { LoginResponse } from '../dto/response';
 
 const router = Router();
 
@@ -21,13 +23,25 @@ router.post(
 );
 
 router.post(
-  '/logout/:id',
-  [celebrate(userSchemas.getUserSchema)],
-  (req: Request, res: Response, next: NextFunction) => {
-    const { id } = req.params;
+  '/login',
+  [celebrate(authSchemas.loginSchema)],
+  (req: Request<{}, any, {}, { code: string }>, res: Response, next: NextFunction) => {
+    const { code } = req.query;
 
     authService
-      .logout(id)
+      .login(code)
+      .then((response: LoginResponse) => res.send(response))
+      .catch(next);
+  },
+);
+
+router.post(
+  '/logout',
+  (req: Request, res: Response, next: NextFunction) => {
+    const user = res.locals.user
+
+    authService
+      .logout(user.username)
       .then(() => res.send())
       .catch(next);
   },

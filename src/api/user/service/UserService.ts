@@ -1,6 +1,6 @@
 import { getUserRepository } from '../../../lib/repositories';
 import { UserAlreadyExistsException } from '../../../lib/exceptions/user';
-import { GetUserPermissionsResponse, UserResponse } from '../dto/response';
+import { GetUserPermissionsResponse, UserFullResponse, UserResponse } from '../dto/response';
 import { ResourceNotFoundException } from '../../../lib/exceptions/shared';
 import { mapUserEntitiesToUserResponses, mapUserEntityToUserResponse } from '../../../lib/utils/mapper/user';
 import { UpdateUserRequest } from '../dto/request';
@@ -8,10 +8,11 @@ import { PageableItems, PageableRequest } from '../../../lib/shared/dto/paginati
 import { createPageableResponse } from '../../../lib/utils/mapper/pagination';
 import { RolePermissionEntity } from '../../../lib/entities/RolePermissionEntity';
 import { PermissionActionType } from '../../../lib/shared/types';
+import { mapUserEntityToUserFullResponse } from '../../../lib/utils/mapper/user/mapUserEntityToUserResponse';
 
 interface IUserService {
   getUser: (id: string) => Promise<UserResponse>; // TODO: move get methods to another service (UserQueryService)
-  getUserByUsername: (username: string) => Promise<UserResponse>;
+  getUserByUsername: (username: string) => Promise<UserFullResponse>;
   getUsers: (query: PageableRequest) => Promise<PageableItems<UserResponse>>;
   updateUser: (id: string, request: Partial<UpdateUserRequest>) => Promise<void>;
   deleteUser: (id: string) => Promise<void>;
@@ -29,15 +30,15 @@ const getUser = async (id: string): Promise<UserResponse> => {
   return mapUserEntityToUserResponse(user);
 };
 
-const getUserByUsername = async (username: string): Promise<UserResponse> => {
+const getUserByUsername = async (username: string): Promise<UserFullResponse> => {
   const userRepository = await getUserRepository();
-  const user = await userRepository.findOne({ where: { username } });
+  const user = await userRepository.findOne({ where: { username }, relations: ['role'] });
 
   if (!user) {
     throw new ResourceNotFoundException();
   }
 
-  return mapUserEntityToUserResponse(user);
+  return mapUserEntityToUserFullResponse(user);
 };
 
 const getUsers = async (query: PageableRequest): Promise<PageableItems<UserResponse>> => {
