@@ -26,12 +26,12 @@ services:
     build:
       context: ../
       dockerfile: ./Dockerfile.dev
-    volumes:
-      - ./:/home/node/mvpmatch-api
     ports:
       - '3000:3000'
     env_file:
       - .env.docker.dev
+    depends_on:
+      - "mvpmatch-db-dev"
   redis:
     image: 'redis:alpine'
     expose:

@@ -1,13 +1,12 @@
 FROM node:12.17.0-alpine
 
-WORKDIR /home/node/mvpmatch-api
+WORKDIR /home/node/mvpchallange-api
 
 COPY package*.json ./
 RUN npm install
-COPY . .
+COPY . ./
 COPY ./.docker/.env.docker.dev ./.env.dev
 
 EXPOSE 3000
 
 CMD ["npm", "start"]
-

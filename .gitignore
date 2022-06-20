@@ -16,6 +16,9 @@ coverage/
 
 # Docker
 .docker/volumes/
+.docker/.env.docker.dev
+.docker/.env.docker.test
+.docker/.env.docker.prod
 
 yarn-error.log
 

@@ -35,6 +35,15 @@ $ cp .env.dev.example .env.dev
 $ yarn
 ```
 
+- Start database
+
+```
+$ cd .docker
+$ cp .env.docker.dev.example .env.docker.dev
+$ docker-compose -f docker-compose.dev.yml build
+$ docker-compose -f docker-compose.dev.yml up redis mvpmatch-db-dev
+```
+
 - Run migrations
 
 ```
@@ -54,8 +63,16 @@ $ yarn start
 
 ```
 $ cd .docker
+$ cp .env.docker.dev.example .env.docker.dev
+$ cp .env.docker.test.example .env.docker.test
 $ docker-compose -f docker-compose.dev.yml build
 $ docker-compose -f docker-compose.dev.yml up
+```
+
+- Run migrations
+
+```
+$ yarn migration:run
 ```
 
 ### How to run tests
@@ -64,6 +81,7 @@ $ docker-compose -f docker-compose.dev.yml up
 
 ```
 $ cd .docker
+$ cp .env.docker.test.example .env.docker.test
 $ docker-compose -f docker-compose.dev.yml build
 $ docker-compose -f docker-compose.dev.yml up mvpmatch-db-test
 ```
@@ -83,3 +101,18 @@ seller password: Mvpmatchuser2!
 
 ## NOTE
 - Dockerfile for production prepared 
+
+- Sensitive env variables:
+```
+# Cognito
+AUTH_DOMAIN=mvpmatch
+CLIENT_ID=650h1612nu36htu7qlg863sm07
+REDIRECT_URI=http://localhost:3001/auth/post-login
+POOL_ID=us-east-1_FeFQfs9hN
+REGION=us-east-1
+TOKEN_USE=access
+TOKEN_EXPIRATION=3600000
+RESPONSE_TYPE=code
+# Database
+POSTGRES_PASSWORD=SuperCoolTest123!
+```
